@@ -1,50 +1,116 @@
 body {
-  font-family: sans-serif;
-  padding: 20px;
-  background: #f9f9f9;
+  font-family: "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+  background-color: #fafafa;
+  color: #333;
+  margin: 0;
+  padding: 2rem;
 }
 
-.card {
-  background: white;
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-}
-
-img {
-  max-width: 200px;
-  display: block;
-  margin-bottom: 10px;
+h1 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: #444;
 }
 
 .filters {
   display: flex;
+  justify-content: center;
   flex-wrap: wrap;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 20px;
+  gap: 1.5rem;
+  /* 各ラベル＋セレクトのセット間の間隔 */
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+}
+
+.filters label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  /* ラベルとセレクトの間の隙間 */
+}
+
+.filters select {
+  padding: 0.4rem 0.6rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.3rem;
+}
+
+
+#list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.card {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  padding: 1rem;
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  object-fit: cover;
 }
 
 details {
-  margin-top: 10px;
-  background: #f0f0f0;
-  padding: 5px;
-  border-radius: 5px;
+  margin-top: 0.5rem;
 }
 
-details summary {
-  cursor: pointer;
+summary {
   font-weight: bold;
+  cursor: pointer;
+  padding: 0.3rem;
+  background-color: #f0f0f0;
+  border-radius: 4px;
 }
 
-.card table {
+table {
   width: 100%;
-  margin-top: 10px;
   border-collapse: collapse;
+  margin-top: 0.5rem;
 }
 
-.card th, .card td {
-  padding: 4px 8px;
+th,
+td {
+  padding: 0.3rem;
   text-align: left;
+  font-size: 0.95rem;
+}
+
+th {
+  color: #666;
+  width: 40%;
+}
+
+td {
+  color: #333;
+}
+
+@media (max-width: 600px) {
+  body {
+    padding: 1rem;
+  }
+
+  .filters {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .filters label,
+  .filters select {
+    width: 100%;
+  }
 }
