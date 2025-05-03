@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>着物コーデ一覧</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>着物コーデ一覧</h1>
+
+  <div class="filters">
+    <label for="category">カテゴリ選択：</label>
+    <select id="category" onchange="renderItems()">
+      <option value="浴衣">浴衣</option>
+      <option value="単衣">単衣</option>
+      <option value="小紋">小紋</option>
+      <option value="銘仙">銘仙</option>
+    </select>
+  
+    <label for="color">色：</label>
+    <select id="color" onchange="renderItems()">
+      <option value="">すべて</option>
+      <option value="白">白</option>
+      <option value="黒">黒</option>
+      <option value="ピンク">ピンク</option>
+      <option value="紫">紫</option>
+    </select>
+  
+    <label for="pattern">柄：</label>
+    <select id="pattern" onchange="renderItems()">
+      <option value="">すべて</option>
+      <option value="花柄">花柄</option>
+      <!-- <option value="縞">縞</option>
+      <option value="幾何学">幾何学</option> -->
+    </select>
+  </div>
+  
+
+  <div id="list"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
