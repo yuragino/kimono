@@ -1,48 +1,633 @@
 [
   {
-    "ファイル名": "yukata001_身丈163_裄66_後幅31",
+    "ファイル名": "浴衣001_身丈161_裄63_後幅29",
+    "身丈": 161,
+    "裄": 63,
+    "後幅": 29,
+    "画像URL": "https://drive.google.com/uc?id=1J_JMZBwaACm3J_QDEmPdgg-8EDwzr7su"
+  },
+  {
+    "ファイル名": "浴衣002_身丈165_裄68_後幅29",
+    "身丈": 165,
+    "裄": 68,
+    "後幅": 29,
+    "画像URL": "https://drive.google.com/uc?id=1rcYaEZddsQ7J3kWd2ybvbNq3gZc4CQJC"
+  },
+  {
+    "ファイル名": "浴衣003_身丈158_裄65_後幅31",
+    "身丈": 158,
+    "裄": 65,
+    "後幅": 31,
+    "画像URL": "https://drive.google.com/uc?id=1DG1_ipT9PqRZIzmuGVtpF3QI8w2H-j3e",
+    "パターンb": "https://drive.google.com/uc?id=1lZ_noWhgjMVRnfTnBurR8mmth_Hig8ZU",
+    "パターンc": "https://drive.google.com/uc?id=1jQlrQcWMFfIZ7ApW4OOyYAAD4Yh-8Ws5"
+  },
+  {
+    "ファイル名": "浴衣004_身丈162_裄62_後幅29",
+    "身丈": 162,
+    "裄": 62,
+    "後幅": 29,
+    "画像URL": "https://drive.google.com/uc?id=14bpyXoYiekMYRetDcukuTxCYXYWUnNjh"
+  },
+  {
+    "ファイル名": "浴衣005_身丈165_裄63_後幅29",
+    "身丈": 165,
+    "裄": 63,
+    "後幅": 29,
+    "画像URL": "https://drive.google.com/uc?id=12e2aQPN_9GnOHpa3PDDUcvmWIykcbAhd",
+    "パターンb": "https://drive.google.com/uc?id=1j1aOseo4Np84aXZr0HvdxsIRpBJn1o06"
+  },
+  {
+    "ファイル名": "浴衣006_身丈165_裄62_後幅28",
+    "身丈": 165,
+    "裄": 62,
+    "後幅": 28,
+    "画像URL": "https://drive.google.com/uc?id=1S_7wEPTq6LLQ532NM1H0u_Hd6RShrvjC",
+    "パターンb": "https://drive.google.com/uc?id=1DidoO0c6gpsY68xCc1PaByjRbZHNSvVn"
+  },
+  {
+    "ファイル名": "浴衣007_身丈172_裄75_後幅32",
+    "身丈": 172,
+    "裄": 75,
+    "後幅": 32,
+    "画像URL": "https://drive.google.com/uc?id=1Yc5nRNFN8sooDY35LkwuCXC_hmH2Fvbk",
+    "パターンb": "https://drive.google.com/uc?id=1K6dKTCbQEfJSOz_KkhvhHIw6Uo2KDt0k",
+    "パターンc": "https://drive.google.com/uc?id=1eow2uVta6S4e58xHEp8cSIUoyFPwNabK"
+  },
+  {
+    "ファイル名": "浴衣008_身丈166_裄66_後幅28",
+    "身丈": 166,
+    "裄": 66,
+    "後幅": 28,
+    "画像URL": "https://drive.google.com/uc?id=1dGbPatB4tdIfNd4C6yoN_zVWdUVZG4q2",
+    "パターンb": "https://drive.google.com/uc?id=1x70-meY_dch52My5SEZoPpowjGYTihtM"
+  },
+  {
+    "ファイル名": "浴衣009_身丈166_裄61_後幅27",
+    "身丈": 166,
+    "裄": 61,
+    "後幅": 27,
+    "画像URL": "https://drive.google.com/uc?id=15vnVPcu2ogwEJPVwy-YlGoXdQIT2iGXn"
+  },
+  {
+    "ファイル名": "浴衣010_身丈160_裄61_後幅28",
+    "身丈": 160,
+    "裄": 61,
+    "後幅": 28,
+    "画像URL": "https://drive.google.com/uc?id=1g5VSIx1B_HLCXcnsODe03u5wdPAUHKVb"
+  },
+  {
+    "ファイル名": "浴衣011_身丈160_裄62_後幅30",
+    "身丈": 160,
+    "裄": 62,
+    "後幅": 30,
+    "画像URL": "https://drive.google.com/uc?id=158EbnWQCW3qSzdh2w-Z4EvfC-f7xe6aZ"
+  },
+  {
+    "ファイル名": "浴衣012_身丈160_裄65_後幅29",
+    "身丈": 160,
+    "裄": 65,
+    "後幅": 29,
+    "画像URL": "https://drive.google.com/uc?id=1xFHv1eG3chiNu9pSa7TxrdskcDYCO-B7"
+  },
+  {
+    "ファイル名": "浴衣013_身丈160_裄64_後幅29",
+    "身丈": 160,
+    "裄": 64,
+    "後幅": 29,
+    "画像URL": "https://drive.google.com/uc?id=1WsWg2ADk3sKda-ufB6w4f8fx2DdjpKGB"
+  },
+  {
+    "ファイル名": "浴衣014_身丈160_裄66_後幅30",
+    "身丈": 160,
+    "裄": 66,
+    "後幅": 30,
+    "画像URL": "https://drive.google.com/uc?id=1ynkGvJI3ojpqr9s05Z4plHkVgR2N3pHN"
+  },
+  {
+    "ファイル名": "浴衣015_身丈160_裄65_後幅30",
+    "身丈": 160,
+    "裄": 65,
+    "後幅": 30,
+    "画像URL": "https://drive.google.com/uc?id=11U51wKW5QfRrhjKHhl9cXGyeqpJdKsXN"
+  },
+  {
+    "ファイル名": "浴衣016_身丈160_裄59_後幅28",
+    "身丈": 160,
+    "裄": 59,
+    "後幅": 28,
+    "画像URL": "https://drive.google.com/uc?id=1IABIliDQ3um_bo3GdrObhFRMfPAIj0v1"
+  },
+  {
+    "ファイル名": "浴衣017_身丈160_裄60_後幅28",
+    "身丈": 160,
+    "裄": 60,
+    "後幅": 28,
+    "画像URL": "https://drive.google.com/uc?id=17aZVqOzQwAL49vLX8u3t3JuJ4xEX2jUy"
+  },
+  {
+    "ファイル名": "浴衣018_身丈160_裄67_後幅29",
+    "身丈": 160,
+    "裄": 67,
+    "後幅": 29,
+    "画像URL": "https://drive.google.com/uc?id=1opsUdXb8K3v6Q6-xJUt28O3FXEaROJw7"
+  },
+  {
+    "ファイル名": "浴衣019_身丈160_裄63_後幅28",
+    "身丈": 160,
+    "裄": 63,
+    "後幅": 28,
+    "画像URL": "https://drive.google.com/uc?id=1n1pEP3l0z8pPEDVI3zZMPFjlSk7Ru7Jz"
+  },
+  {
+    "ファイル名": "浴衣020_身丈160_裄62_後幅28",
+    "身丈": 160,
+    "裄": 62,
+    "後幅": 28,
+    "画像URL": "https://drive.google.com/uc?id=10WPjsyX5BPa6c67qS4y6o28yeg9-j5QO"
+  },
+  {
+    "ファイル名": "浴衣021_身丈160_裄63_後幅28",
+    "身丈": 160,
+    "裄": 63,
+    "後幅": 28,
+    "画像URL": "https://drive.google.com/uc?id=1KyaY354E7N-cDJy7ML-6eCEVG84crRs_"
+  },
+  {
+    "ファイル名": "浴衣022_身丈160_裄64_後幅29",
+    "身丈": 160,
+    "裄": 64,
+    "後幅": 29,
+    "画像URL": "https://drive.google.com/uc?id=1AHVywrl6lpweeGWwTQhqYbx2XXQtK4lQ"
+  },
+  {
+    "ファイル名": "浴衣023_身丈160_裄63_後幅29",
+    "身丈": 160,
+    "裄": 63,
+    "後幅": 29,
+    "画像URL": "https://drive.google.com/uc?id=172LpZifR--cb-CkATjKvnL8R-dQwS12S"
+  },
+  {
+    "ファイル名": "浴衣024_身丈160_裄64_後幅29",
+    "身丈": 160,
+    "裄": 64,
+    "後幅": 29,
+    "画像URL": "https://drive.google.com/uc?id=1SkwS1XLBjz4aJV-90EV9GYX0KCk3JaRa"
+  },
+  {
+    "ファイル名": "浴衣025_身丈160_裄65_後幅30",
+    "身丈": 160,
+    "裄": 65,
+    "後幅": 30,
+    "画像URL": "https://drive.google.com/uc?id=1arINo8AhIagyj6fHbbDsv7c2fZxC_QcD"
+  },
+  {
+    "ファイル名": "浴衣026_身丈160_裄68_後幅30",
+    "身丈": 160,
+    "裄": 68,
+    "後幅": 30,
+    "画像URL": "https://drive.google.com/uc?id=1Q2KYyvyFUZ9-Gh2Dd3ZxEzFS4T1Hmv1F"
+  },
+  {
+    "ファイル名": "浴衣027_身丈160_裄65_後幅29",
+    "身丈": 160,
+    "裄": 65,
+    "後幅": 29,
+    "画像URL": "https://drive.google.com/uc?id=1MlZfgtFFlF468n6JxEcgMVWobG2Qsa-3"
+  },
+  {
+    "ファイル名": "浴衣028_身丈160_裄63_後幅29",
+    "身丈": 160,
+    "裄": 63,
+    "後幅": 29,
+    "画像URL": "https://drive.google.com/uc?id=1k_1frqafi2_5AaRW8hyCmhHIZxwkwJax"
+  },
+  {
+    "ファイル名": "浴衣029_身丈160_裄61_後幅28",
+    "身丈": 160,
+    "裄": 61,
+    "後幅": 28,
+    "画像URL": "https://drive.google.com/uc?id=1U4O5YKnud6eL4jn61WTU5OIPTaCjvNwW"
+  },
+  {
+    "ファイル名": "浴衣030_身丈160_裄65_後幅30",
+    "身丈": 160,
+    "裄": 65,
+    "後幅": 30,
+    "画像URL": "https://drive.google.com/uc?id=1Nu-0p9Pts_nl1lJUZ2f0_qjeEucARPNt"
+  },
+  {
+    "ファイル名": "浴衣031_身丈165_裄63_後幅28",
+    "身丈": 165,
+    "裄": 63,
+    "後幅": 28,
+    "画像URL": "https://drive.google.com/uc?id=1xjf7cDWSSPVMDeKfBJThalhKHX23GIYo"
+  },
+  {
+    "ファイル名": "浴衣032_身丈165_裄63_後幅29",
+    "身丈": 165,
+    "裄": 63,
+    "後幅": 29,
+    "画像URL": "https://drive.google.com/uc?id=1OBMuT-dNCOEn5FQW3R7XWta3bAvB5Juq"
+  },
+  {
+    "ファイル名": "浴衣033_身丈165_裄62_後幅28",
+    "身丈": 165,
+    "裄": 62,
+    "後幅": 28,
+    "画像URL": "https://drive.google.com/uc?id=1OiduFcD25zM_R15-MHFRTyg3CWfi6NLS"
+  },
+  {
+    "ファイル名": "浴衣034_身丈165_裄65_後幅30",
+    "身丈": 165,
+    "裄": 65,
+    "後幅": 30,
+    "画像URL": "https://drive.google.com/uc?id=1n3SXyRuAc-6zbOFwK4Snm6cpVpMqFYOD"
+  },
+  {
+    "ファイル名": "浴衣035_身丈168_裄67_後幅33",
+    "身丈": 168,
+    "裄": 67,
+    "後幅": 33,
+    "画像URL": "https://drive.google.com/uc?id=129dMEOD4s2D-9KmgQ6CBmRBA7cdfegcV"
+  },
+  {
+    "ファイル名": "浴衣036_身丈165_裄66_後幅29",
+    "身丈": 165,
+    "裄": 66,
+    "後幅": 29,
+    "画像URL": "https://drive.google.com/uc?id=1PmTpGz7Ecp7JwU-GNCeGmsB9PjrIc0NB"
+  },
+  {
+    "ファイル名": "浴衣037_身丈165_裄65_後幅28",
+    "身丈": 165,
+    "裄": 65,
+    "後幅": 28,
+    "画像URL": "https://drive.google.com/uc?id=1fTk4SyASlGsr4s7tSGAjsD9fdr8DO3MZ"
+  },
+  {
+    "ファイル名": "浴衣038_身丈165_裄64_後幅30",
+    "身丈": 165,
+    "裄": 64,
+    "後幅": 30,
+    "画像URL": "https://drive.google.com/uc?id=1qNmpVSL6Yfnc7dBckdbWE5KlUkpSYUVq"
+  },
+  {
+    "ファイル名": "浴衣039_身丈165_裄65_後幅30",
+    "身丈": 165,
+    "裄": 65,
+    "後幅": 30,
+    "画像URL": "https://drive.google.com/uc?id=1fqWh22CYYC46aUI80bm7w-aFDHssp5Ns"
+  },
+  {
+    "ファイル名": "浴衣040_身丈165_裄65_後幅30",
+    "身丈": 165,
+    "裄": 65,
+    "後幅": 30,
+    "画像URL": "https://drive.google.com/uc?id=1U89IaUeeygU2XSJtyqzZwjubDrXQ5swi"
+  },
+  {
+    "ファイル名": "浴衣041_身丈165_裄65_後幅30",
+    "身丈": 165,
+    "裄": 65,
+    "後幅": 30,
+    "画像URL": "https://drive.google.com/uc?id=18ABrTxwa7BgXXP2rCCNUue4DdZUUzQ3D"
+  },
+  {
+    "ファイル名": "浴衣042_身丈155_裄77_後幅33",
+    "身丈": 155,
+    "裄": 77,
+    "後幅": 33,
+    "画像URL": "https://drive.google.com/uc?id=1vv070I7fhxmX_c8iR84ixRZW5EgbJl2n"
+  },
+  {
+    "ファイル名": "浴衣043_身丈155_裄65_後幅30",
+    "身丈": 155,
+    "裄": 65,
+    "後幅": 30,
+    "画像URL": "https://drive.google.com/uc?id=1trCBNGQceGN1bs3Z7M-FLKAbYQocE4cp"
+  },
+  {
+    "ファイル名": "浴衣044_身丈155_裄66_後幅30",
+    "身丈": 155,
+    "裄": 66,
+    "後幅": 30,
+    "画像URL": "https://drive.google.com/uc?id=1pwyi5ky7LlVkYRneK0JDiXi-Bb8fS3mc"
+  },
+  {
+    "ファイル名": "浴衣045_身丈155_裄62_後幅28",
+    "身丈": 155,
+    "裄": 62,
+    "後幅": 28,
+    "画像URL": "https://drive.google.com/uc?id=1ku1AN7XY6fBLSqQhYvN_OghNwacOzI7X"
+  },
+  {
+    "ファイル名": "浴衣046_身丈155_裄63_後幅30",
+    "身丈": 155,
+    "裄": 63,
+    "後幅": 30,
+    "画像URL": "https://drive.google.com/uc?id=1bcYnSES5GUu6zgb72DqBqF6BOzjusIjm"
+  },
+  {
+    "ファイル名": "浴衣047_身丈155_裄64_後幅30",
+    "身丈": 155,
+    "裄": 64,
+    "後幅": 30,
+    "画像URL": "https://drive.google.com/uc?id=11RL88ZEhty9ijIdElEGTDqek_jkrdn_0"
+  },
+  {
+    "ファイル名": "浴衣048_身丈155_裄63_後幅28",
+    "身丈": 155,
+    "裄": 63,
+    "後幅": 28,
+    "画像URL": "https://drive.google.com/uc?id=1s-F1L0GM4XQucTMJBCOPhNCrmNawSFui"
+  },
+  {
+    "ファイル名": "浴衣049_身丈155_裄63_後幅30",
+    "身丈": 155,
+    "裄": 63,
+    "後幅": 30,
+    "画像URL": "https://drive.google.com/uc?id=1EIeGbcH9jo9t697mNDMp3K97VdOZDJqO"
+  },
+  {
+    "ファイル名": "浴衣050_身丈155_裄62_後幅29",
+    "身丈": 155,
+    "裄": 62,
+    "後幅": 29,
+    "画像URL": "https://drive.google.com/uc?id=10DIIKXQY3wqFRf6u9MuvI6jSFNx1G44T"
+  },
+  {
+    "ファイル名": "浴衣051_身丈155_裄64_後幅29.jpeg",
+    "身丈": 155,
+    "裄": 64,
+    "後幅": 29,
+    "画像URL": "https://drive.google.com/uc?id=1TpMT-N7sPSt8GQLbv3GZTXg8mZ8r3LzX"
+  },
+  {
+    "ファイル名": "浴衣052_身丈155_裄62_後幅29.jpeg",
+    "身丈": 155,
+    "裄": 62,
+    "後幅": 29,
+    "画像URL": "https://drive.google.com/uc?id=1LQpAmWh3c0U9y3iV_XUAehMzKKVX3IH9"
+  },
+  {
+    "ファイル名": "浴衣053_身丈155_裄64_後幅30.jpeg",
+    "身丈": 155,
+    "裄": 64,
+    "後幅": 30,
+    "画像URL": "https://drive.google.com/uc?id=1Gt2K-Uyo6KpV9vTD9OgNJjvF5bR88DW_"
+  },
+  {
+    "ファイル名": "浴衣054_身丈160_裄66_後幅30.jpeg",
+    "身丈": 160,
+    "裄": 66,
+    "後幅": 30,
+    "画像URL": "https://drive.google.com/uc?id=10ha19cDyZQcoms-B8q012rz8q6ZrIBTg"
+  },
+  {
+    "ファイル名": "浴衣055_身丈160_裄63_後幅29.jpeg",
+    "身丈": 160,
+    "裄": 63,
+    "後幅": 29,
+    "画像URL": "https://drive.google.com/uc?id=1Cm4OhIAQl3XxjnL7g0QGL14UQQs-Xsk2"
+  },
+  {
+    "ファイル名": "浴衣056_身丈160_裄68_後幅30.jpeg",
+    "身丈": 160,
+    "裄": 68,
+    "後幅": 30,
+    "画像URL": "https://drive.google.com/uc?id=1B_49GOUOiAN9mNLkLk6qlec5s2nMsO7m"
+  },
+  {
+    "ファイル名": "浴衣057_身丈165_裄67_後幅32.jpeg",
+    "身丈": 165,
+    "裄": 67,
+    "後幅": 32,
+    "画像URL": "https://drive.google.com/uc?id=14V5DDulMuFXaccT2Goberer7bCp57fPl"
+  },
+  {
+    "ファイル名": "浴衣058_身丈168_裄63_後幅28.jpeg",
+    "身丈": 168,
+    "裄": 63,
+    "後幅": 28,
+    "画像URL": "https://drive.google.com/uc?id=17nHIWXqnMQlJjcgI6o9gm50WzAvFxWRy"
+  },
+  {
+    "ファイル名": "浴衣059_身丈160_裄60_後幅28.jpeg",
+    "身丈": 160,
+    "裄": 60,
+    "後幅": 28,
+    "画像URL": "https://drive.google.com/uc?id=1244-qMpNpnuvmiVsgah1v1nDQ98zfNex"
+  },
+  {
+    "ファイル名": "浴衣060_身丈168_裄65_後幅30.jpeg",
+    "身丈": 168,
+    "裄": 65,
+    "後幅": 30,
+    "画像URL": "https://drive.google.com/uc?id=1MD0TT9EIx3FhU4iMv3h1PFDSGHYydBi4"
+  },
+  {
+    "ファイル名": "浴衣061_身丈157_裄63_後幅29.jpeg",
+    "身丈": 157,
+    "裄": 63,
+    "後幅": 29,
+    "画像URL": "https://drive.google.com/uc?id=1ZbcVZDW6jaqj5tJuglVqOrI80JiC7l1n"
+  },
+  {
+    "ファイル名": "浴衣062_身丈166_裄61_後幅30.jpeg",
+    "身丈": 166,
+    "裄": 61,
+    "後幅": 30,
+    "画像URL": "https://drive.google.com/uc?id=1sCr0MDxKYVYFaYdHuOWpR7MV13SUsvd-"
+  },
+  {
+    "ファイル名": "浴衣063_身丈158_裄60_後幅27.jpeg",
+    "身丈": 158,
+    "裄": 60,
+    "後幅": 27,
+    "画像URL": "https://drive.google.com/uc?id=1Gl2zD4QpOtarflnjB5s3OFN7c5-cAER9"
+  },
+  {
+    "ファイル名": "浴衣064_身丈165_裄60_後幅28.jpeg",
+    "身丈": 165,
+    "裄": 60,
+    "後幅": 28,
+    "画像URL": "https://drive.google.com/uc?id=1ikEc_fm9RD_gKfVpbSqETtXT0A1pqmgx"
+  },
+  {
+    "ファイル名": "浴衣065_身丈163_裄63_後幅30.jpeg",
+    "身丈": 163,
+    "裄": 63,
+    "後幅": 30,
+    "画像URL": "https://drive.google.com/uc?id=1qdqNFBjYYOUuZem3eE5ImP8SyrkU-WLQ"
+  },
+  {
+    "ファイル名": "浴衣066_身丈166_裄65_後幅30.jpeg",
+    "身丈": 166,
+    "裄": 65,
+    "後幅": 30,
+    "画像URL": "https://drive.google.com/uc?id=19SgehPSv-GRGhcb-RhMnSP9ENsfHhzvL"
+  },
+  {
+    "ファイル名": "浴衣067_身丈165_裄67_後幅30.jpeg",
+    "身丈": 165,
+    "裄": 67,
+    "後幅": 30,
+    "画像URL": "https://drive.google.com/uc?id=1mcgw1MflU94ik4ciDqihDkLSz1nzjiio"
+  },
+  {
+    "ファイル名": "浴衣068_身丈163_裄65_後幅28.jpeg",
+    "身丈": 163,
+    "裄": 65,
+    "後幅": 28,
+    "画像URL": "https://drive.google.com/uc?id=11Cd_1ApT_u8HgO1Z4NARu0GES2Ckmhwx"
+  },
+  {
+    "ファイル名": "浴衣069_身丈165_裄65_後幅30.jpeg",
+    "身丈": 165,
+    "裄": 65,
+    "後幅": 30,
+    "画像URL": "https://drive.google.com/uc?id=1EgfHOvASdzLrYdJ1JX-WNcVQMFO2Uxnn"
+  },
+  {
+    "ファイル名": "浴衣070_身丈169_裄68_後幅30.jpeg",
+    "身丈": 169,
+    "裄": 68,
+    "後幅": 30,
+    "画像URL": "https://drive.google.com/uc?id=189-4hgtnWDRO8GlHWB_Dz4eA72itpimD"
+  },
+  {
+    "ファイル名": "浴衣071_身丈165_裄67_後幅29.jpeg",
+    "身丈": 165,
+    "裄": 67,
+    "後幅": 29,
+    "画像URL": "https://drive.google.com/uc?id=12Vjzoa_-6R9JWf0tnX3VesKRg8aS_w5Y"
+  },
+  {
+    "ファイル名": "浴衣072_身丈163_裄67_後幅31.jpeg",
+    "身丈": 163,
+    "裄": 67,
+    "後幅": 31,
+    "画像URL": "https://drive.google.com/uc?id=1laHes_EdQUe3RIyLVrIOx2eNMwmpDQJt"
+  },
+  {
+    "ファイル名": "浴衣073_身丈168_裄70_後幅32.jpeg",
+    "身丈": 168,
+    "裄": 70,
+    "後幅": 32,
+    "画像URL": "https://drive.google.com/uc?id=1nPvEkOEyHVgDUZIgPXz6n4vNZowZZzte"
+  },
+  {
+    "ファイル名": "浴衣074_身丈153_裄63_後幅29.jpeg",
+    "身丈": 153,
+    "裄": 63,
+    "後幅": 29,
+    "画像URL": "https://drive.google.com/uc?id=1daum-oFwuEsv7OR5Qp-6JZvzFB1hdSd2"
+  },
+  {
+    "ファイル名": "浴衣075_身丈153_裄62_後幅29.jpeg",
+    "身丈": 153,
+    "裄": 62,
+    "後幅": 29,
+    "画像URL": "https://drive.google.com/uc?id=1aTmAQ7JLBZB4kLDb6A6ofHZDjTIn-hZa"
+  },
+  {
+    "ファイル名": "浴衣076_身丈166_裄65_後幅30.jpeg",
+    "身丈": 166,
+    "裄": 65,
+    "後幅": 30,
+    "画像URL": "https://drive.google.com/uc?id=1bhDj399F2W4gFWFFD6FF7H1rvJjVVMrx"
+  },
+  {
+    "ファイル名": "浴衣077_身丈163_裄67_後幅30.jpeg",
+    "身丈": 163,
+    "裄": 67,
+    "後幅": 30,
+    "画像URL": "https://drive.google.com/uc?id=1Q4_EYjdk1CA3c-vLVE0VNDlkLVKFklS4"
+  },
+  {
+    "ファイル名": "浴衣078_身丈165_裄67_後幅30.jpeg",
+    "身丈": 165,
+    "裄": 67,
+    "後幅": 30,
+    "画像URL": "https://drive.google.com/uc?id=1GU59w0KCgTBI_8dEHhWljVyAQZw5Ahms"
+  },
+  {
+    "ファイル名": "浴衣079_身丈162_裄65_後幅30.jpeg",
+    "身丈": 162,
+    "裄": 65,
+    "後幅": 30,
+    "画像URL": "https://drive.google.com/uc?id=1qv3tUsqiPnamN12c7uGMl4QBKx4tM3h9"
+  },
+  {
+    "ファイル名": "浴衣080_身丈163_裄68_後幅30.jpeg",
+    "身丈": 163,
+    "裄": 68,
+    "後幅": 30,
+    "画像URL": "https://drive.google.com/uc?id=1kr00o0UYJB1tYw7ks7Y_M82UARaKBoE0"
+  },
+  {
+    "ファイル名": "浴衣081_身丈159_裄67_後幅30.jpeg",
+    "身丈": 159,
+    "裄": 67,
+    "後幅": 30,
+    "画像URL": "https://drive.google.com/uc?id=1AslWVIi5hlb4nMY1SKc3IbR41lAVZ9ay"
+  },
+  {
+    "ファイル名": "浴衣082_身丈158_裄65_後幅30.jpeg",
+    "身丈": 158,
+    "裄": 65,
+    "後幅": 30,
+    "画像URL": "https://drive.google.com/uc?id=1ZMMXC7FNRLjZEj-SQaSnRlD-RB-2qrZV"
+  },
+  {
+    "ファイル名": "浴衣083_身丈163_裄65_後幅30.jpeg",
+    "身丈": 163,
+    "裄": 65,
+    "後幅": 30,
+    "画像URL": "https://drive.google.com/uc?id=1pMKZDfEOF-_SmgH1-POGvhH-lPk6lnkk"
+  },
+  {
+    "ファイル名": "浴衣084_身丈163_裄66_後幅31.jpeg",
     "身丈": 163,
     "裄": 66,
     "後幅": 31,
-    "画像URL": "https://drive.google.com/uc?id=1CQEu45mQvpQj1YCjWUqw9KTWorI5BC3L",
-    "色": ["ピンク", "紫", "黒"],
-    "柄": ["花柄"]
+    "画像URL": "https://drive.google.com/uc?id=1mez8LDddvy3MhV3veeYMZ_yKQrfUgVSu"
   },
   {
-    "ファイル名": "yukata002_身丈162_裄65_後幅29",
-    "身丈": 162,
-    "裄": 65,
-    "後幅": 29,
-    "画像URL": "https://drive.google.com/uc?id=1t3AdarnxHUoqWliywQ13fqokcu5F2I3a",
-    "色": ["白", "紫"],
-    "柄": ["花柄"]
-  },
-  {
-    "ファイル名": "yukata003_身丈163_裄65_後幅30",
-    "身丈": 163,
-    "裄": 65,
-    "後幅": 30,
-    "画像URL": "https://drive.google.com/uc?id=1Cb7_xwiK7493OT6yeV8Jll9P9E2ASnJg",
-    "色": ["白", "ピンク", "紫"],
-    "柄": ["花柄"]
-  },
-  {
-    "ファイル名": "yukata004_身丈164_裄64_後幅29",
+    "ファイル名": "浴衣085_身丈164_裄64_後幅29.jpeg",
     "身丈": 164,
     "裄": 64,
     "後幅": 29,
-    "画像URL": "https://drive.google.com/uc?id=1Z8mLICrnmlla2uv04Ue5ou0h4uy9Tphi",
-    "色": ["白", "紫"],
-    "柄": ["花柄"]
+    "画像URL": "https://drive.google.com/uc?id=1njwsbza42kaqqnTBySEt9zcoS4WXycbn"
   },
   {
-    "ファイル名": "yukata005_身丈163_裄64_後幅30",
+    "ファイル名": "浴衣086_身丈162_裄65_後幅29.jpeg",
+    "身丈": 162,
+    "裄": 65,
+    "後幅": 29,
+    "画像URL": "https://drive.google.com/uc?id=145UCAp0po5wIOI53mHj3UnUunSXrNfhY"
+  },
+  {
+    "ファイル名": "浴衣087_身丈163_裄64_後幅30.jpeg",
     "身丈": 163,
     "裄": 64,
     "後幅": 30,
-    "画像URL": "https://drive.google.com/uc?id=1IRA3ZwiNdUxYWiMFlWhhnHfxkNi5D9Ez",
-    "色": ["黒", "ピンク"],
-    "柄": ["花柄"]
+    "画像URL": "https://drive.google.com/uc?id=18ttKkWv2zpT2vwEj0iX4s-nH8XvtvN9M"
+  },
+  {
+    "ファイル名": "浴衣088_身丈162_裄62_後幅28.jpeg",
+    "身丈": 162,
+    "裄": 62,
+    "後幅": 28,
+    "画像URL": "https://drive.google.com/uc?id=1DPhMmyjnUI1sZrOtF59kSdLNm3JXE7J_"
+  },
+  {
+    "ファイル名": "浴衣089_身丈160_裄63_後幅30.jpeg",
+    "身丈": 160,
+    "裄": 63,
+    "後幅": 30,
+    "画像URL": "https://drive.google.com/uc?id=15RpYggVhifoiCfNCVTJOX-t0BFxgu9ld",
+    "パターンb": "https://drive.google.com/uc?id=168EpVxd7_k9rwM_wZuSxqI3K74m4iyLj"
   }
-]
-
+  ]
