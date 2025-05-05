@@ -60,10 +60,10 @@
 
     async function displayItems() {
 
-      // 今選ばれているカテゴリを取得
+      // カテゴリを取得
       const category = document.getElementById("category").value;
 
-      // 並べ替え基準を取得（デフォルトは「身丈_asc」）
+      // 並べ替え基準を取得 デフォルトはasc
       const sortBy = document.getElementById("sortBy").value;
 
       // 表示エリアに「読み込み中...」と出す
@@ -108,7 +108,6 @@
       return items.sort((a, b) => {
         if (sortBy === "身丈_asc") return a["身丈"] - b["身丈"];
         if (sortBy === "身丈_desc") return b["身丈"] - a["身丈"];
-        return 0;
       });
     }
 
