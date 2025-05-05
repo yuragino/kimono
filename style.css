@@ -98,6 +98,38 @@ td {
   color: #333;
 }
 
+.image-container {
+  position: relative;
+  width: fit-content;
+}
+
+.image-container img {
+  width: 100%;
+  max-width: 300px;
+}
+
+.image-container button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.7);
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.image-container .prev {
+  border-radius: 50%;
+  left: 0;
+}
+
+.image-container .next {
+  border-radius: 50%;
+  right: 0;
+}
+
+
 @media (max-width: 600px) {
   html {
     font-size: 17px;

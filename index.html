@@ -122,9 +122,26 @@
           const div = document.createElement("div");
           div.className = "card";
 
-          // サイズ詳細を <details> タグで折りたたみ表示にする
+          // 画像を配列にまとめる
+          const imageUrls = [item["画像URL"]];
+          if (item["パターンb"]) imageUrls.push(item["パターンb"]);
+          if (item["パターンc"]) imageUrls.push(item["パターンc"]);
+
+          const imagesHtml = imageUrls.map((url, index) => `
+          <img src="${convertToStableUrl(url)}" alt="着物画像" class="kimono-image" style="${index === 0 ? '' : 'display:none'}">
+          `).join('');
+
+          const hasMultipleImages = imageUrls.length > 1;
+
           div.innerHTML = `
-            <img src="${convertToStableUrl(item.画像URL)}" alt="着物画像">
+    <div class="image-container">
+      ${imagesHtml}
+      ${hasMultipleImages ? `
+        <button class="prev">◀</button>
+        <button class="next">▶</button>
+      ` : ''}
+    </div>
+
             <details>
               <summary>サイズ詳細</summary>
               <table>
@@ -138,8 +155,32 @@
               <tr><th>ヒップサイズ</th><td>${getHipSize(item["後幅"])}</td></tr>
             </table>
           `;
+
           // 作ったカードをリストに追加
           list.appendChild(div);
+          // 複数画像があるときだけスライド機能を追加
+          if (hasMultipleImages) {
+            const container = div.querySelector(".image-container");
+            const images = container.querySelectorAll(".kimono-image");
+            let current = 0;
+
+            const showImage = index => {
+              images.forEach((img, i) => {
+                img.style.display = i === index ? "" : "none";
+              });
+            };
+
+            container.querySelector(".prev").addEventListener("click", () => {
+              current = (current - 1 + images.length) % images.length;
+              showImage(current);
+            });
+
+            container.querySelector(".next").addEventListener("click", () => {
+              current = (current + 1) % images.length;
+              showImage(current);
+            });
+          }
+
         });
       } catch (error) {
         list.innerHTML = `<p>データの読み込みに失敗しました。</p>`;
@@ -147,10 +188,22 @@
       }
     }
 
+    // 画像切り替え関数
+    function changeImage(button, direction) {
+      const image = button.parentNode.querySelector('.gallery-image');
+      const images = JSON.parse(image.dataset.images);
+      let currentIndex = parseInt(image.dataset.currentIndex);
+
+      currentIndex += direction;
+      if (currentIndex < 0) currentIndex = images.length - 1;
+      if (currentIndex >= images.length) currentIndex = 0;
+
+      image.src = images[currentIndex];
+      image.dataset.currentIndex = currentIndex;
+    }
+
     // ページを開いたとき、すぐに表示されるよう呼び出す
     displayItems();
-
-    // todo 昇順降順で並べ替え。身丈基準。
 
   </script>
 </body>
