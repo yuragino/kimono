@@ -72,15 +72,13 @@
 
       try {
 
+        // カテゴリに対応するJSONデータを取得
         const items = await fetchItems(category);
+        // 取得したitemsを並べ替え
         const sortedItems = sortItems(items, sortBy);
 
         // 読み込み中を消して、リストをリセット
         list.innerHTML = "";
-
-        list.innerHTML = sortedItems.length === 0
-          ? "<p>条件に一致するデータがありません。</p>"
-          : "";
 
         sortedItems.forEach(item => {
           const card = createCard(item);
