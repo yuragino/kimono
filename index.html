@@ -42,7 +42,8 @@
   <!-- ここからJavaScript -->
   <script>
 
-    // カテゴリごとに読み込むJSONファイル名を指定
+    /* ===== 読み込むJSONファイルの指定 ===== */
+
     const categoryMap = {
       "浴衣": "yukata.json",
       "単衣": "hitoe.json",
@@ -50,46 +51,11 @@
       "銘仙": "meisen.json"
     };
 
-    /*--------------------------------------
-        サイトに表示できるようURLを変換
-    --------------------------------------*/
-
-    function convertToStableUrl(originalUrl) {
-
-      // 「id=...」の部分を正規表現で取り出す
-      const match = originalUrl.match(/id=([^&]+)/);
-
-      // IDが取れたら画像用URLに変換、失敗したら元のURLを返す
-      return match ? `https://lh3.googleusercontent.com/d/${match[1]}` : originalUrl;
-
-    }
+    /* ===== ページ読み込み時に実行 ===== */
+    displayItems();
 
     /*--------------------------------------
-        後幅からヒップサイズを計算
-    --------------------------------------*/
-
-    function getHipSize(width) {
-      const map = {
-        27: "84cm以下", 28: "89cm以下", 29: "94cm以下",
-        30: "99cm以下", 31: "104cm以下", 32: "109cm以下",
-        33: "114cm以下", 34: "119cm以下"
-      };
-
-      // 後幅の指定がない場合は「サイズ不明」と返す
-      return map[width] || "サイズ不明";
-    }
-
-    /*--------------------------------------
-     身丈から推奨身長を計算
-  --------------------------------------*/
-
-    function getHeightRange(mitake) {
-      // プラマイ5センチ
-      return `${mitake - 5}cm〜${mitake + 5}cm`;
-    }
-
-    /*--------------------------------------
-    画面にカードを表示する処理
+      メイン処理：画面にカードを表示
 --------------------------------------*/
 
     async function displayItems() {
@@ -126,7 +92,7 @@
         console.error("JSON読み込みエラー:", error);
       }
     }
-    
+
     /*--------------------------------------
         JSONデータ取得
     --------------------------------------*/
@@ -136,7 +102,7 @@
     }
 
     /*--------------------------------------
-        データの並び替え
+        ソート処理
     --------------------------------------*/
     function sortItems(items, sortBy) {
       return items.sort((a, b) => {
@@ -214,11 +180,38 @@
         showImage(currentIndex);
       });
     }
-
+    
     /*--------------------------------------
-        ページ読み込み時に呼び出す
+        ユーティリティ関数
     --------------------------------------*/
-    displayItems();
+    /* ===== URL変換 ===== */
+    function convertToStableUrl(originalUrl) {
+
+      // 「id=...」の部分を正規表現で取り出す
+      const match = originalUrl.match(/id=([^&]+)/);
+
+      // IDが取れたら画像用URLに変換、失敗したら元のURLを返す
+      return match ? `https://lh3.googleusercontent.com/d/${match[1]}` : originalUrl;
+
+    }
+
+    /* ===== 後幅からヒップサイズを計算 ===== */
+    function getHipSize(width) {
+      const map = {
+        27: "84cm以下", 28: "89cm以下", 29: "94cm以下",
+        30: "99cm以下", 31: "104cm以下", 32: "109cm以下",
+        33: "114cm以下", 34: "119cm以下"
+      };
+
+      // 後幅の指定がない場合は「サイズ不明」と返す
+      return map[width] || "サイズ不明";
+    }
+
+    /* ===== 身丈から推奨身長を計算 ===== */
+    function getHeightRange(mitake) {
+      // プラマイ5センチ
+      return `${mitake - 5}cm〜${mitake + 5}cm`;
+    }
 
   </script>
 </body>
