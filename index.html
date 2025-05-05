@@ -88,74 +88,83 @@
       return `${mitake - 5}cm〜${mitake + 5}cm`;
     }
 
-    /***************************************************************
-          アイテムを読み込んで表示する非同期関数
-     ***************************************************************/
+    /*--------------------------------------
+    画面にカードを表示する処理
+--------------------------------------*/
 
     async function displayItems() {
 
       // 今選ばれているカテゴリを取得
       const category = document.getElementById("category").value;
 
+      // 並べ替え基準を取得（デフォルトは「身丈_asc」）
+      const sortBy = document.getElementById("sortBy").value;
+
       // 表示エリアに「読み込み中...」と出す
       const list = document.getElementById("list");
       list.innerHTML = "<p>読み込み中...</p>";
 
-      // 並べ替え基準を取得（デフォルトは「身丈_asc」）
-      const sortBy = document.getElementById("sortBy").value;
-
       try {
 
-        // 選ばれたカテゴリに対応するJSONファイルを読み込む
-        const jsonData = await fetch(`data/${categoryMap[category]}`);
-
-        // 読み込んだJSONをJavaScriptの配列に変換
-        const items = await jsonData.json();
-
-        // 並べ替え
-        const sortedItems = items.sort((a, b) => {
-          // 身丈を基準に昇順・降順を切り替える
-          if (sortBy === "身丈_asc") {
-            return a["身丈"] - b["身丈"]; // 昇順
-          } else if (sortBy === "身丈_desc") {
-            return b["身丈"] - a["身丈"]; // 降順
-          }
-        });
+        const items = await fetchItemsByCategory(category);
+        const sortedItems = sortItems(items, sortBy);
 
         // 読み込み中を消して、リストをリセット
         list.innerHTML = "";
 
-        // データがなければ「条件に一致するデータがありません」と表示
-        if (sortedItems.length === 0) {
-          list.innerHTML = "<p>条件に一致するデータがありません。</p>";
-          return;
-        }
+        list.innerHTML = sortedItems.length === 0
+          ? "<p>条件に一致するデータがありません。</p>"
+          : "";
 
-        // 並べ替えた着物データを1件ずつ取り出して、HTMLでカードとして表示
         sortedItems.forEach(item => {
+          const card = createCard(item);
+          list.appendChild(card);
+        });
 
-          // カードの要素を作る
-          const div = document.createElement("div");
-          div.className = "card";
+      } catch (error) {
+        list.innerHTML = `<p>データの読み込みに失敗しました。</p>`;
+        console.error("JSON読み込みエラー:", error);
+      }
+    }
+    
+    /*--------------------------------------
+        JSONデータ取得
+    --------------------------------------*/
+    async function fetchItemsByCategory(category) {
+      const response = await fetch(`data/${categoryMap[category]}`);
+      return await response.json();
+    }
 
-          // メイン画像を配列に入れる
-          const imageUrls = [item["画像URL"]];
+    /*--------------------------------------
+        データの並び替え
+    --------------------------------------*/
+    function sortItems(items, sortBy) {
+      return items.sort((a, b) => {
+        if (sortBy === "身丈_asc") return a["身丈"] - b["身丈"];
+        if (sortBy === "身丈_desc") return b["身丈"] - a["身丈"];
+        return 0;
+      });
+    }
 
-          //追加画像を配列に入れる
-          ["パターンb", "パターンc", "パターンd", "パターンe", "パターンf", "パターンg"].forEach(key => {
-            if (item[key]) imageUrls.push(item[key]);
-          });
+    /*--------------------------------------
+      HTML生成
+  --------------------------------------*/
+    function createCard(item) {
+      const div = document.createElement("div");
+      div.className = "card";
 
-          // imageUrls にあるすべての画像URLを < img > タグに変換
-          // インデックスが0の時のみ表示
-          const imagesHtml = imageUrls.map((url, index) => `
-          <img src="${convertToStableUrl(url)}" alt="着物画像" class="kimono-image" style="${index === 0 ? '' : 'display:none'}">
-          `).join('');
+      const imageUrls = [item["画像URL"]];
+      ["パターンb", "パターンc", "パターンd", "パターンe", "パターンf", "パターンg"].forEach(key => {
+        if (item[key]) imageUrls.push(item[key]);
+      });
 
-          // 画像が複数枚ある場合は true、そうでなければ false
-          const hasMultipleImages = imageUrls.length > 1;
+      const imagesHtml = imageUrls.map((url, index) => `
+    <img src="${convertToStableUrl(url)}" alt="着物画像" class="kimono-image" style="${index === 0 ? '' : 'display:none'}">
+  `).join('');
 
-          div.innerHTML = `
+      const hasMultipleImages = imageUrls.length > 1;
+
+      div.innerHTML = `
     <div class="image-container">
       ${imagesHtml}
       ${hasMultipleImages ? `
@@ -163,59 +172,52 @@
         <button class="next">▶</button>
       ` : ''}
     </div>
-            <details>
-              <summary>サイズ詳細</summary>
-              <table>
-                <tr><th>身丈</th><td>${item["身丈"]}cm</td></tr>
-                <tr><th>後幅</th><td>${item["後幅"]}cm</td></tr>
-                <tr><th>裄</th><td>${item["裄"]}cm</td></tr>
-              </table>
-            </details>
-            <table>
-              <tr><th>推奨身長</th><td>${getHeightRange(item["身丈"])}</td></tr>
-              <tr><th>ヒップサイズ</th><td>${getHipSize(item["後幅"])}</td></tr>
-            </table>
-          `;
+    <details>
+      <summary>サイズ詳細</summary>
+      <table>
+        <tr><th>身丈</th><td>${item["身丈"]}cm</td></tr>
+        <tr><th>後幅</th><td>${item["後幅"]}cm</td></tr>
+        <tr><th>裄</th><td>${item["裄"]}cm</td></tr>
+      </table>
+    </details>
+    <table>
+      <tr><th>推奨身長</th><td>${getHeightRange(item["身丈"])}</td></tr>
+      <tr><th>ヒップサイズ</th><td>${getHipSize(item["後幅"])}</td></tr>
+    </table>
+  `;
 
-          // 作ったカードをリストに追加
-          list.appendChild(div);
+      if (hasMultipleImages) addImageSlider(div, imageUrls);
 
-          // 複数画像があるときだけスライド機能を追加
-          if (hasMultipleImages) {
-            const container = div.querySelector(".image-container");
-            const images = container.querySelectorAll(".kimono-image");
+      return div;
+    }
+    /*--------------------------------------
+        画像のスライド機能
+    --------------------------------------*/
+    function addImageSlider(div, imageUrls) {
+      const container = div.querySelector(".image-container");
+      const images = container.querySelectorAll(".kimono-image");
+      let currentIndex = 0;
 
-            // 現在表示している画像のインデックス
-            let currentIndex = 0;
-
-            // 画像の表示を切り替える関数
-            const showImage = index => {
-              images.forEach((img, i) => {
-                img.style.display = i === index ? "" : "none";
-              });
-            };
-
-            // 前へボタンが押された時
-            container.querySelector(".prev").addEventListener("click", () => {
-              currentIndex = (currentIndex - 1 + images.length) % images.length;
-              showImage(currentIndex);
-            });
-
-            // 次へボタンが押された時
-            container.querySelector(".next").addEventListener("click", () => {
-              currentIndex = (currentIndex + 1) % images.length;
-              showImage(currentIndex);
-            });
-          }
-
+      const showImage = index => {
+        images.forEach((img, i) => {
+          img.style.display = i === index ? "" : "none";
         });
-      } catch (error) {
-        list.innerHTML = `<p>データの読み込みに失敗しました。</p>`;
-        console.error("JSON読み込みエラー:", error);
-      }
+      };
+
+      container.querySelector(".prev").addEventListener("click", () => {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        showImage(currentIndex);
+      });
+
+      container.querySelector(".next").addEventListener("click", () => {
+        currentIndex = (currentIndex + 1) % images.length;
+        showImage(currentIndex);
+      });
     }
 
-    // ページを開いたとき、すぐに表示されるよう呼び出す
+    /*--------------------------------------
+        ページ読み込み時に呼び出す
+    --------------------------------------*/
     displayItems();
 
   </script>
