@@ -35,15 +35,25 @@
 
   </div>
 
-
-
   <!-- 選んだカテゴリに応じて画像カードが表示される場所 -->
   <div id="list"></div>
 
 
   <!-- ここからJavaScript -->
   <script>
-    // ======= サイトで使えるURLに変換 =======
+
+    // カテゴリごとに読み込むJSONファイル名を指定
+    const categoryMap = {
+      "浴衣": "yukata.json",
+      "単衣": "hitoe.json",
+      "小紋": "komon.json",
+      "銘仙": "meisen.json"
+    };
+
+    /*--------------------------------------
+        サイトに表示できるようURLを変換
+    --------------------------------------*/
+
     function convertToStableUrl(originalUrl) {
 
       // 「id=...」の部分を正規表現で取り出す
@@ -54,15 +64,10 @@
 
     }
 
-    // カテゴリごとに読み込むJSONファイル名を指定
-    const categoryMap = {
-      "浴衣": "yukata.json",
-      "単衣": "hitoe.json",
-      "小紋": "komon.json",
-      "銘仙": "meisen.json"
-    };
+    /*--------------------------------------
+        後幅からヒップサイズを計算
+    --------------------------------------*/
 
-    // ======= 後幅からヒップサイズを返す =======
     function getHipSize(width) {
       const map = {
         27: "84cm以下", 28: "89cm以下", 29: "94cm以下",
@@ -74,16 +79,24 @@
       return map[width] || "サイズ不明";
     }
 
-    // 身丈から推奨身長の範囲を出す
+    /*--------------------------------------
+     身丈から推奨身長を計算
+  --------------------------------------*/
+
     function getHeightRange(mitake) {
       // プラマイ5センチ
       return `${mitake - 5}cm〜${mitake + 5}cm`;
     }
 
-    // ======= アイテムを読み込んで表示する非同期関数 =======
+    /***************************************************************
+          アイテムを読み込んで表示する非同期関数
+     ***************************************************************/
+
     async function displayItems() {
+
       // 今選ばれているカテゴリを取得
       const category = document.getElementById("category").value;
+
       // 表示エリアに「読み込み中...」と出す
       const list = document.getElementById("list");
       list.innerHTML = "<p>読み込み中...</p>";
@@ -92,8 +105,10 @@
       const sortBy = document.getElementById("sortBy").value;
 
       try {
+
         // 選ばれたカテゴリに対応するJSONファイルを読み込む
         const jsonData = await fetch(`data/${categoryMap[category]}`);
+
         // 読み込んだJSONをJavaScriptの配列に変換
         const items = await jsonData.json();
 
@@ -116,21 +131,28 @@
           return;
         }
 
-        // 各アイテムを処理するループ開始
+        // 並べ替えた着物データを1件ずつ取り出して、HTMLでカードとして表示
         sortedItems.forEach(item => {
+
           // カードの要素を作る
           const div = document.createElement("div");
           div.className = "card";
 
-          // 画像を配列にまとめる
+          // メイン画像を配列に入れる
           const imageUrls = [item["画像URL"]];
-          if (item["パターンb"]) imageUrls.push(item["パターンb"]);
-          if (item["パターンc"]) imageUrls.push(item["パターンc"]);
 
+          //追加画像を配列に入れる
+          ["パターンb", "パターンc", "パターンd", "パターンe", "パターンf", "パターンg"].forEach(key => {
+            if (item[key]) imageUrls.push(item[key]);
+          });
+
+          // imageUrls にあるすべての画像URLを < img > タグに変換
+          // インデックスが0の時のみ表示
           const imagesHtml = imageUrls.map((url, index) => `
           <img src="${convertToStableUrl(url)}" alt="着物画像" class="kimono-image" style="${index === 0 ? '' : 'display:none'}">
           `).join('');
 
+          // 画像が複数枚ある場合は true、そうでなければ false
           const hasMultipleImages = imageUrls.length > 1;
 
           div.innerHTML = `
@@ -141,7 +163,6 @@
         <button class="next">▶</button>
       ` : ''}
     </div>
-
             <details>
               <summary>サイズ詳細</summary>
               <table>
@@ -158,26 +179,32 @@
 
           // 作ったカードをリストに追加
           list.appendChild(div);
+
           // 複数画像があるときだけスライド機能を追加
           if (hasMultipleImages) {
             const container = div.querySelector(".image-container");
             const images = container.querySelectorAll(".kimono-image");
-            let current = 0;
 
+            // 現在表示している画像のインデックス
+            let currentIndex = 0;
+
+            // 画像の表示を切り替える関数
             const showImage = index => {
               images.forEach((img, i) => {
                 img.style.display = i === index ? "" : "none";
               });
             };
 
+            // 前へボタンが押された時
             container.querySelector(".prev").addEventListener("click", () => {
-              current = (current - 1 + images.length) % images.length;
-              showImage(current);
+              currentIndex = (currentIndex - 1 + images.length) % images.length;
+              showImage(currentIndex);
             });
 
+            // 次へボタンが押された時
             container.querySelector(".next").addEventListener("click", () => {
-              current = (current + 1) % images.length;
-              showImage(current);
+              currentIndex = (currentIndex + 1) % images.length;
+              showImage(currentIndex);
             });
           }
 
@@ -186,20 +213,6 @@
         list.innerHTML = `<p>データの読み込みに失敗しました。</p>`;
         console.error("JSON読み込みエラー:", error);
       }
-    }
-
-    // 画像切り替え関数
-    function changeImage(button, direction) {
-      const image = button.parentNode.querySelector('.gallery-image');
-      const images = JSON.parse(image.dataset.images);
-      let currentIndex = parseInt(image.dataset.currentIndex);
-
-      currentIndex += direction;
-      if (currentIndex < 0) currentIndex = images.length - 1;
-      if (currentIndex >= images.length) currentIndex = 0;
-
-      image.src = images[currentIndex];
-      image.dataset.currentIndex = currentIndex;
     }
 
     // ページを開いたとき、すぐに表示されるよう呼び出す
