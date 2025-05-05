@@ -16,7 +16,7 @@
     <!-- カテゴリ選択 -->
     <div class="filter-item">
       <label for="category">カテゴリ選択：</label>
-      <select id="category" onchange="renderItems()">
+      <select id="category" onchange="displayItems()">
         <option value="浴衣">浴衣</option>
         <option value="単衣">単衣</option>
         <option value="小紋">小紋</option>
@@ -27,7 +27,7 @@
     <!-- 並べ替え機能 -->
     <div class="filter-item">
       <label for="sortBy">並べ替え：</label>
-      <select id="sortBy" onchange="renderItems()">
+      <select id="sortBy" onchange="displayItems()">
         <option value="身丈_asc">身長が小さい順</option>
         <option value="身丈_desc">身長が大きい順</option>
       </select>
@@ -81,7 +81,7 @@
     }
 
     // ======= アイテムを読み込んで表示する非同期関数 =======
-    async function renderItems() {
+    async function displayItems() {
       // 今選ばれているカテゴリを取得
       const category = document.getElementById("category").value;
       // 表示エリアに「読み込み中...」と出す
@@ -148,7 +148,7 @@
     }
 
     // ページを開いたとき、すぐに表示されるよう呼び出す
-    renderItems();
+    displayItems();
 
     // todo 昇順降順で並べ替え。身丈基準。
 
