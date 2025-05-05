@@ -72,16 +72,20 @@
 
       try {
 
-        // カテゴリに対応するJSONデータを取得
+        // カテゴリに対応するJSONデータを取得して配列に格納
         const items = await fetchItems(category);
-        // 取得したitemsを並べ替え
+
+        // itemsを並べ替えて配列に格納
         const sortedItems = sortItems(items, sortBy);
 
-        // 読み込み中を消して、リストをリセット
+        // 「読み込み中」を消す
         list.innerHTML = "";
 
+        // sortedItems配列内の各アイテムに対してカードを作る
         sortedItems.forEach(item => {
+          // カードを生成
           const card = createCard(item);
+          // 生成したカードを「List」要素に追加して画面表示
           list.appendChild(card);
         });
 
@@ -95,6 +99,7 @@
         JSONデータ取得
     --------------------------------------*/
     async function fetchItems(category) {
+      // JSONファイルをとってくる
       const response = await fetch(`data/${categoryMap[category]}`);
       return await response.json();
     }
@@ -112,25 +117,33 @@
     /*--------------------------------------
       HTML生成
   --------------------------------------*/
+    // 1つのアイテムに対しての処理
     function createCard(item) {
+
+      // カード用のdiv要素を作成し、クラス名を設定
       const div = document.createElement("div");
       div.className = "card";
 
+      // メイン画像URLを配列に追加
       const imageUrls = [item["画像URL"]];
+
+      // 追加画像があれば順番に配列に追加
       ["パターンb", "パターンc", "パターンd", "パターンe", "パターンf", "パターンg"].forEach(key => {
         if (item[key]) imageUrls.push(item[key]);
       });
 
+      // imageUrlsから各画像URLを取り出して <img> タグに変換（最初の画像だけ表示）。imagesHtml配列を作る
       const imagesHtml = imageUrls.map((url, index) => `
     <img src="${stableUrl(url)}" alt="着物画像" class="kimono-image" style="${index === 0 ? '' : 'display:none'}">
   `).join('');
 
-      const hasMultipleImages = imageUrls.length > 1;
+      // 複数枚画像があるかどうかを判定
+      const isMultiple = imageUrls.length > 1;
 
       div.innerHTML = `
     <div class="image-container">
       ${imagesHtml}
-      ${hasMultipleImages ? `
+      ${isMultiple ? `
         <button class="prev">◀</button>
         <button class="next">▶</button>
       ` : ''}
@@ -150,7 +163,7 @@
   `;
 
       // 複数画像がある場合にスライド機能追加
-      if (hasMultipleImages) imageSlider(div, imageUrls);
+      if (isMultiple) imageSlider(div, imageUrls);
 
       return div;
     }
