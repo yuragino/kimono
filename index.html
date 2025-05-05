@@ -125,7 +125,7 @@
       });
 
       const imagesHtml = imageUrls.map((url, index) => `
-    <img src="${convertToStableUrl(url)}" alt="着物画像" class="kimono-image" style="${index === 0 ? '' : 'display:none'}">
+    <img src="${stableUrl(url)}" alt="着物画像" class="kimono-image" style="${index === 0 ? '' : 'display:none'}">
   `).join('');
 
       const hasMultipleImages = imageUrls.length > 1;
@@ -147,19 +147,20 @@
       </table>
     </details>
     <table>
-      <tr><th>推奨身長</th><td>${getHeightRange(item["身丈"])}</td></tr>
-      <tr><th>ヒップサイズ</th><td>${getHipSize(item["後幅"])}</td></tr>
+      <tr><th>推奨身長</th><td>${heightRange(item["身丈"])}</td></tr>
+      <tr><th>ヒップサイズ</th><td>${hipSize(item["後幅"])}</td></tr>
     </table>
   `;
 
-      if (hasMultipleImages) addImageSlider(div, imageUrls);
+      // 複数画像がある場合にスライド機能追加
+      if (hasMultipleImages) imageSlider(div, imageUrls);
 
       return div;
     }
     /*--------------------------------------
-        画像のスライド機能
+        画像のスライド機能追加
     --------------------------------------*/
-    function addImageSlider(div, imageUrls) {
+    function imageSlider(div, imageUrls) {
       const container = div.querySelector(".image-container");
       const images = container.querySelectorAll(".kimono-image");
       let currentIndex = 0;
@@ -185,7 +186,7 @@
         ユーティリティ関数
     --------------------------------------*/
     /* ===== URL変換 ===== */
-    function convertToStableUrl(originalUrl) {
+    function stableUrl(originalUrl) {
 
       // 「id=...」の部分を正規表現で取り出す
       const match = originalUrl.match(/id=([^&]+)/);
@@ -196,7 +197,7 @@
     }
 
     /* ===== 後幅からヒップサイズを計算 ===== */
-    function getHipSize(width) {
+    function hipSize(width) {
       const map = {
         27: "84cm以下", 28: "89cm以下", 29: "94cm以下",
         30: "99cm以下", 31: "104cm以下", 32: "109cm以下",
@@ -208,7 +209,7 @@
     }
 
     /* ===== 身丈から推奨身長を計算 ===== */
-    function getHeightRange(mitake) {
+    function heightRange(mitake) {
       // プラマイ5センチ
       return `${mitake - 5}cm〜${mitake + 5}cm`;
     }
