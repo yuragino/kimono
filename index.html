@@ -12,7 +12,8 @@
 
   <!-- 絞り込みメニューを囲む -->
   <div class="filters">
-    <!-- 絞り込みの1項目を囲む -->
+
+    <!-- カテゴリ選択 -->
     <div class="filter-item">
       <label for="category">カテゴリ選択：</label>
       <select id="category" onchange="renderItems()">
@@ -22,7 +23,19 @@
         <option value="銘仙">銘仙</option>
       </select>
     </div>
+
+    <!-- 並べ替え機能 -->
+    <div class="filter-item">
+      <label for="sortBy">並べ替え：</label>
+      <select id="sortBy" onchange="renderItems()">
+        <option value="身丈_asc">身長が小さい順</option>
+        <option value="身丈_desc">身長が大きい順</option>
+      </select>
+    </div>
+
   </div>
+
+
 
   <!-- 選んだカテゴリに応じて画像カードが表示される場所 -->
   <div id="list"></div>
@@ -75,25 +88,36 @@
       const list = document.getElementById("list");
       list.innerHTML = "<p>読み込み中...</p>";
 
+      // 並べ替え基準を取得（デフォルトは「身丈_asc」）
+      const sortBy = document.getElementById("sortBy").value;
+
       try {
         // 選ばれたカテゴリに対応するJSONファイルを読み込む
         const jsonData = await fetch(`data/${categoryMap[category]}`);
         // 読み込んだJSONをJavaScriptの配列に変換
         const items = await jsonData.json();
 
-        const filteredItems = items; 
+        // 並べ替え
+        const sortedItems = items.sort((a, b) => {
+          // 身丈を基準に昇順・降順を切り替える
+          if (sortBy === "身丈_asc") {
+            return a["身丈"] - b["身丈"]; // 昇順
+          } else if (sortBy === "身丈_desc") {
+            return b["身丈"] - a["身丈"]; // 降順
+          }
+        });
 
         // 読み込み中を消して、リストをリセット
         list.innerHTML = "";
 
         // データがなければ「条件に一致するデータがありません」と表示
-        if (filteredItems.length === 0) {
+        if (sortedItems.length === 0) {
           list.innerHTML = "<p>条件に一致するデータがありません。</p>";
           return;
         }
 
         // 各アイテムを処理するループ開始
-        filteredItems.forEach(item => {
+        sortedItems.forEach(item => {
           // カードの要素を作る
           const div = document.createElement("div");
           div.className = "card";
@@ -124,7 +148,9 @@
     }
 
     // ページを開いたとき、すぐに表示されるよう呼び出す
-    renderItems(); 
+    renderItems();
+
+    // todo 昇順降順で並べ替え。身丈基準。
 
   </script>
 </body>
