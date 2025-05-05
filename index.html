@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
   <meta charset="UTF-8">
   <title>着物コーデ一覧</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
   <h1>着物コーデ一覧</h1>
 
+  <!-- 絞り込みメニューを囲む -->
   <div class="filters">
+    <!-- 絞り込みの1項目を囲む -->
     <div class="filter-item">
       <label for="category">カテゴリ選択：</label>
       <select id="category" onchange="renderItems()">
@@ -20,14 +24,24 @@
     </div>
   </div>
 
+  <!-- 選んだカテゴリに応じて画像カードが表示される場所 -->
   <div id="list"></div>
 
+
+  <!-- ここからJavaScript -->
   <script>
+    // ======= サイトで使えるURLに変換 =======
     function convertToStableUrl(originalUrl) {
+
+      // 「id=...」の部分を正規表現で取り出す
       const match = originalUrl.match(/id=([^&]+)/);
+
+      // IDが取れたら画像用URLに変換、失敗したら元のURLを返す
       return match ? `https://lh3.googleusercontent.com/d/${match[1]}` : originalUrl;
+
     }
 
+    // カテゴリごとに読み込むJSONファイル名を指定
     const categoryMap = {
       "浴衣": "yukata.json",
       "単衣": "hitoe.json",
@@ -35,39 +49,56 @@
       "銘仙": "meisen.json"
     };
 
+    // ======= 後幅からヒップサイズを返す =======
     function getHipSize(width) {
       const map = {
         27: "84cm以下", 28: "89cm以下", 29: "94cm以下",
         30: "99cm以下", 31: "104cm以下", 32: "109cm以下",
         33: "114cm以下", 34: "119cm以下"
       };
+
+      // 後幅の指定がない場合は「サイズ不明」と返す
       return map[width] || "サイズ不明";
     }
 
-    function getHeightRange(mitage) {
-      return `${mitage - 5}cm〜${mitage + 5}cm`;
+    // 身丈から推奨身長の範囲を出す
+    function getHeightRange(mitake) {
+      // プラマイ5センチ
+      return `${mitake - 5}cm〜${mitake + 5}cm`;
     }
 
+    // ======= アイテムを読み込んで表示する非同期関数 =======
     async function renderItems() {
+      // 今選ばれているカテゴリを取得
       const category = document.getElementById("category").value;
+      // 表示エリアに「読み込み中...」と出す
       const list = document.getElementById("list");
       list.innerHTML = "<p>読み込み中...</p>";
 
       try {
-        const response = await fetch(`data/${categoryMap[category]}`);
-        const items = await response.json();
+        // 選ばれたカテゴリに対応するJSONファイルを読み込む
+        const jsonData = await fetch(`data/${categoryMap[category]}`);
+        // 読み込んだJSONをJavaScriptの配列に変換
+        const items = await jsonData.json();
 
-        const filteredItems = items; // 色フィルターなし
+        const filteredItems = items; 
+
+        // 読み込み中を消して、リストをリセット
         list.innerHTML = "";
 
+        // データがなければ「条件に一致するデータがありません」と表示
         if (filteredItems.length === 0) {
           list.innerHTML = "<p>条件に一致するデータがありません。</p>";
           return;
         }
 
+        // 各アイテムを処理するループ開始
         filteredItems.forEach(item => {
+          // カードの要素を作る
           const div = document.createElement("div");
           div.className = "card";
+
+          // サイズ詳細を <details> タグで折りたたみ表示にする
           div.innerHTML = `
             <img src="${convertToStableUrl(item.画像URL)}" alt="着物画像">
             <details>
@@ -83,6 +114,7 @@
               <tr><th>ヒップサイズ</th><td>${getHipSize(item["後幅"])}</td></tr>
             </table>
           `;
+          // 作ったカードをリストに追加
           list.appendChild(div);
         });
       } catch (error) {
@@ -91,7 +123,10 @@
       }
     }
 
-    renderItems(); // 初期表示
+    // ページを開いたとき、すぐに表示されるよう呼び出す
+    renderItems(); 
+
   </script>
 </body>
+
 </html>
