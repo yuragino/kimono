@@ -45,6 +45,7 @@ h1 {
   gap: 0.5rem; /* ラベルとボタンの間隔 */
 }
 
+/* カテゴリ選ぶボタン */
 #category-buttons button {
   font-size: 1rem;
   margin: 0 5px;
@@ -52,6 +53,7 @@ h1 {
   cursor: pointer;
   border: 1px solid #ccc;
   border-radius: 0.3rem;
+  color: #333;
   background-color: white;
 }
 
@@ -67,6 +69,8 @@ h1 {
   /* 囲みのスタイル */
   border: 1px solid #ccc;
   border-radius: 0.3rem;
+  background-color: white;
+  color: #333;
 }
 
 /* 画像カードが表示される領域 */
