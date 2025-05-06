@@ -17,15 +17,15 @@
   <!-- 絞り込みメニューを囲む -->
   <div class="filters">
 
-    <!-- カテゴリ選択 -->
+    <!-- カテゴリ選択（ボタン） -->
     <div class="filter-item">
-      <label for="category">カテゴリ選択：</label>
-      <select id="category" onchange="displayItems()">
-        <option value="浴衣">浴衣</option>
-        <option value="単衣">単衣</option>
-        <option value="小紋">小紋</option>
-        <option value="銘仙">銘仙</option>
-      </select>
+      <label>カテゴリ選択：</label>
+      <div id="category-buttons">
+        <button data-category="浴衣">浴衣</button>
+        <button data-category="単衣">単衣</button>
+        <button data-category="小紋">小紋</button>
+        <button data-category="銘仙">銘仙</button>
+      </div>
     </div>
 
     <!-- 並べ替え機能 -->
@@ -46,6 +46,8 @@
   <!-- ここからJavaScript -->
   <script>
 
+    let currentCategory = "浴衣"; // 初期カテゴリ
+
     /* ===== 読み込むJSONファイルの指定 ===== */
 
     const categoryMap = {
@@ -58,6 +60,15 @@
     /* ===== ページ読み込み時に実行 ===== */
     displayItems();
 
+    // ボタンをクリックしたときにカテゴリ切り替えと再表示
+    document.getElementById("category-buttons").addEventListener("click", (e) => {
+      if (e.target.tagName === "BUTTON") {
+        currentCategory = e.target.dataset.category;
+        displayItems();
+      }
+    })
+
+
     /*--------------------------------------
       メイン処理：画面にカードを表示
 --------------------------------------*/
@@ -65,7 +76,7 @@
     async function displayItems() {
 
       // カテゴリを取得
-      const category = document.getElementById("category").value;
+      const category = currentCategory;
 
       // 並べ替え基準を取得 デフォルトはasc
       const sortBy = document.getElementById("sortBy").value;

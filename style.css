@@ -39,7 +39,6 @@ h1 {
   margin-bottom: 1.5rem;
   font-size: 1rem;
 }
-
 /* filter-itemのセレクトボックス */
 .filters select {
    font-size: 1rem;
@@ -49,6 +48,21 @@ h1 {
   border: 1px solid #ccc;
   border-radius: 0.3rem;
 }
+
+#category-buttons button {
+  margin: 0 5px;
+  padding: 6px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-radius: 0.3rem;
+  background-color: white;
+}
+
+#category-buttons button:hover{
+  background-color: #fafafa;
+}
+
 
 /* 画像カードが表示される領域 */
 #list {
