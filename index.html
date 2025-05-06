@@ -68,7 +68,6 @@
       }
     })
 
-
     /*--------------------------------------
       メイン処理：画面にカードを表示
 --------------------------------------*/
@@ -237,8 +236,11 @@
 
     /* ===== 身丈から推奨身長を計算 ===== */
     function heightRange(mitake) {
-      // プラマイ5センチ
-      return `${mitake - 5}cm〜${mitake + 5}cm`;
+      if (currentCategory == "浴衣") {
+        return `${mitake - 7}cm〜${mitake + 5}cm`
+      } else {
+        return `${mitake - 5}cm〜${mitake + 5}cm`;
+      }
     }
 
   </script>
