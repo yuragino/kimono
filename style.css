@@ -13,11 +13,8 @@ html {
 }
 
 body {
-  /* オフホワイト */
   background-color: #fafafa;
-  /* 暗い灰色 */
   color: #333;
-  margin: 0;
   padding: 2rem;
 }
 
@@ -167,6 +164,28 @@ th {
   color: #fff;
   padding: 2px 6px;
   border-radius: 4px;
+}
+
+#scroll-to-top {
+  text-align: center;
+  margin: 2.5rem 0 1rem;
+}
+
+#scroll-to-top button {
+  background-color: #b04a4a; 
+  color: #fff;
+  border: none;
+  padding: 0.8rem 2rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: background-color 0.3s;
+}
+
+#scroll-to-top button:hover {
+  background-color: #923f3f; 
 }
 
 

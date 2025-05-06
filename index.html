@@ -42,6 +42,10 @@
   <!-- 選んだカテゴリに応じて画像カードが表示される場所 -->
   <div id="list"></div>
 
+  <!-- 上に戻るボタン -->
+  <div id="scroll-to-top">
+    <button onclick="scrollToTop()">▲ 上に戻る</button>
+  </div>
 
   <!-- ここからJavaScript -->
   <script>
@@ -280,6 +284,15 @@
         return `${mitake - 5}cm〜${mitake + 5}cm`;
       }
     }
+
+    /* ===== 上に戻るボタン ===== */
+    function scrollToTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    }
+
 
   </script>
 </body>
