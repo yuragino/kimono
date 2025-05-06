@@ -46,7 +46,7 @@
   <!-- ここからJavaScript -->
   <script>
 
-    let currentCategory = "浴衣"; // 初期カテゴリ
+    let category = "浴衣"; // 初期カテゴリ
 
     /* ===== 読み込むJSONファイルの指定 ===== */
 
@@ -63,7 +63,7 @@
     // ボタンをクリックしたときにカテゴリ切り替えと再表示
     document.getElementById("category-buttons").addEventListener("click", (e) => {
       if (e.target.tagName === "BUTTON") {
-        currentCategory = e.target.dataset.category;
+        category = e.target.dataset.category;
         displayItems();
       }
     })
@@ -73,9 +73,6 @@
 --------------------------------------*/
 
     async function displayItems() {
-
-      // カテゴリを取得
-      const category = currentCategory;
 
       // 並べ替え基準を取得 デフォルトはasc
       const sortBy = document.getElementById("sortBy").value;
@@ -237,8 +234,8 @@
     /* ===== 身丈から推奨身長を計算 ===== */
     function heightRange(mitake) {
 
-      if (currentCategory == "浴衣") {
-        return `${mitake - 7}cm〜${mitake + 8}cm`
+      if (category == "浴衣") {
+        return `${mitake - 7}cm〜${mitake + 8}cm`;
       } else {
         return `${mitake - 5}cm〜${mitake + 5}cm`;
       }
