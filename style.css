@@ -142,6 +142,12 @@ th {
     gap: 1rem;
   }
 
+  /* ラベルとセレクトボックスの間に余白 */
+  .filter-item label {
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
   /* 絞り込みメニューのセレクトボックス */
   .filters select {
     width: 100%;
