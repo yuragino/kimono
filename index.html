@@ -136,9 +136,11 @@
         if (item[key]) imageUrls.push(item[key]);
       });
 
-      // imageUrlsから各画像URLを取り出して <img> タグに変換（最初の画像だけ表示）。imagesHtml配列を作る
+      // imageUrlsの各画像URL <img> タグに変換（最初の画像だけ表示）
+      // 画像番号を表示
       const imagesHtml = imageUrls.map((url, index) => `
     <img src="${stableUrl(url)}" alt="着物画像" class="kimono-image" style="${index === 0 ? '' : 'display:none'}">
+    <div class="image-label">${item["ファイル名"].match(/(\d{3}[a-z]?)/)?.[1] || ''}</div>
   `).join('');
 
       // 複数枚画像があるかどうかを判定

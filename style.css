@@ -132,6 +132,18 @@ th {
   right: 0;
 }
 
+/* 画像番号を左下に表示 */
+.image-label {
+  position: absolute;
+  left: 4px;
+  bottom: 4px;
+  font-size: 0.75rem;
+  color: #fff;
+  background-color: rgba(136, 127, 127, 0.5);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
 
 /* スマホの表示 */
 @media (max-width: 600px) {
