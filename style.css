@@ -1,14 +1,27 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  max-width: 100%; /* 画像が親要素をはみ出さないように設定 */
+  height: auto;    /* 高さを自動調整 */
+  font-family: "Noto Sans JP", sans-serif;
+}
+
+
 html {
   font-size: 16px;
 }
 
 body {
+  /* オフホワイト */
   background-color: #fafafa;
+  /* 暗い灰色 */
   color: #333;
   margin: 0;
   padding: 2rem;
 }
 
+/* 着物コーデ一覧 */
 h1 {
   text-align: center;
   font-size: 2rem;
@@ -16,58 +29,56 @@ h1 {
   color: #444;
 }
 
+/* filter-itemのまとまり */
 .filters {
+  /* 横並び中央寄せ */
   display: flex;
   justify-content: center;
-  flex-wrap: wrap;
-  align-items: center;
+  /* filter-item同士の間隔 */
   gap: 1.5rem;
-  /* 各ラベル＋セレクトのセット間の間隔 */
   margin-bottom: 1.5rem;
   font-size: 1rem;
 }
 
-.filters label {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  /* ラベルとセレクトの間の隙間 */
-}
-
+/* filter-itemのセレクトボックス */
 .filters select {
+   font-size: 1rem;
+  /* 内側の余白 */
   padding: 0.4rem 0.6rem;
-  font-size: 1rem;
+  /* 囲みのスタイル */
   border: 1px solid #ccc;
   border-radius: 0.3rem;
 }
 
-
+/* 画像カードが表示される領域 */
 #list {
+  /* 表形式 */
   display: grid;
+  /* 自動で列数を決める。最低260px、最大で均等幅 */
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  /* card同士の間隔 */
   gap: 1.5rem;
 }
 
+/* 各画像カードの見た目 */
 .card {
   background-color: white;
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
   padding: 1rem;
-  transition: transform 0.2s ease;
 }
 
+/* カード内の画像の見た目 */
 .card img {
-  width: 100%;
-  height: auto;
   border-radius: 8px;
-  object-fit: cover;
 }
 
+/*「サイズ詳細」の上の余白 */
 details {
   margin-top: 0.5rem;
 }
 
+/* クリックして開く部分 */
 summary {
   font-weight: bold;
   cursor: pointer;
@@ -78,15 +89,12 @@ summary {
 
 table {
   width: 100%;
-  border-collapse: collapse;
   margin-top: 0.5rem;
 }
 
-th,
-td {
+th,td {
   padding: 0.3rem;
   text-align: left;
-  font-size: 0.95rem;
 }
 
 th {
@@ -94,98 +102,56 @@ th {
   width: 40%;
 }
 
-td {
-  color: #333;
-}
-
+/* カード内で画像がある部分 */
 .image-container {
   position: relative;
-  width: fit-content;
 }
 
-.image-container img {
-  width: 100%;
-  max-width: 300px;
-}
-
+/* 前後ボタン */
 .image-container button {
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
+  
+  top: 50%; /* 	親の中央に、要素の上端を合わせる */
+  transform: translateY(-50%); /* 要素自身の高さの半分を上にずらす */
+
   background: rgba(255,255,255,0.7);
   border: none;
   font-size: 18px;
   cursor: pointer;
   padding: 4px 8px;
+  border-radius: 50%;
 }
 
+/* 前へボタン */
 .image-container .prev {
-  border-radius: 50%;
   left: 0;
 }
 
+/* 次へボタン */
 .image-container .next {
-  border-radius: 50%;
   right: 0;
 }
 
 
+/* スマホの表示 */
 @media (max-width: 600px) {
-  html {
-    font-size: 17px;
-  }
-
-  body {
-    padding: 1rem;
-  }
-
-  h1 {
-    font-size: 1.8rem;
-    text-align: center;
-  }
-
-  .filters {
+  /* 絞り込みメニューたち */
+   .filters {
     flex-direction: column;
     align-items: stretch;
     gap: 1rem;
   }
 
-  .filter-item {
+  /* 絞り込みメニューのセレクトボックス */
+  .filters select {
     width: 100%;
   }
 
-  .filter-item label {
-    display: block;
-    margin-bottom: 0.3rem;
-    font-weight: bold;
-  }
+  /* 前後ボタンの基本スタイル */
+  .image-container button {
+    /* 押しやすいように大きくする */
+  font-size: 24px;
+  padding: 8px 12px;
+}
 
-  .filter-item select {
-    width: 100%;
-    padding: 0.6rem;
-    font-size: 1.1rem;
-  }
-
-  #list {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 横2列に固定 */
-    gap: 1rem;
-  }
-
-  .card {
-    padding: 0.8rem;
-    font-size: 1rem;
-  }
-
-  .card img {
-    margin-bottom: 0.5rem;
-  }
-
-  th, td {
-    font-size: 1rem;
-  }
-
-  summary {
-    font-size: 1rem;
-  }
 }
