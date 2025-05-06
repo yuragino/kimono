@@ -167,6 +167,7 @@ th {
 }
 
 #scroll-to-top {
+    display: none; /* 初期状態で非表示 */
   text-align: center;
   margin: 2.5rem 0 1rem;
 }

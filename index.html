@@ -44,7 +44,7 @@
 
   <!-- 上に戻るボタン -->
   <div id="scroll-to-top">
-    <button onclick="scrollToTop()">▲ 上に戻る</button>
+    <button onclick="scrollToTop()">▲ 上へ戻る</button>
   </div>
 
   <!-- ここからJavaScript -->
@@ -125,6 +125,9 @@
       const list = document.getElementById("list");
       list.innerHTML = "<p>読み込み中...</p>";
 
+      // 上へ戻るボタンを隠す
+      document.getElementById("scroll-to-top").style.display = "none";
+
       try {
 
         // カテゴリに対応するJSONデータを取得して配列に格納
@@ -143,6 +146,9 @@
           // 生成したカードを「List」要素に追加して画面表示
           list.appendChild(card);
         });
+
+        // 上へ戻るボタンを表示
+        document.getElementById("scroll-to-top").style.display = "block";
 
       } catch (error) {
         list.innerHTML = `<p>データの読み込みに失敗しました。</p>`;
