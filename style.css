@@ -39,20 +39,16 @@ h1 {
   margin-bottom: 1.5rem;
   font-size: 1rem;
 }
-/* filter-itemのセレクトボックス */
-.filters select {
-   font-size: 1rem;
-  /* 内側の余白 */
-  padding: 0.4rem 0.6rem;
-  /* 囲みのスタイル */
-  border: 1px solid #ccc;
-  border-radius: 0.3rem;
+.filter-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; /* ラベルとボタンの間隔 */
 }
 
 #category-buttons button {
+  font-size: 1rem;
   margin: 0 5px;
-  padding: 6px 12px;
-  font-size: 14px;
+  padding: 0.8rem 1rem;
   cursor: pointer;
   border: 1px solid #ccc;
   border-radius: 0.3rem;
@@ -63,6 +59,15 @@ h1 {
   background-color: #fafafa;
 }
 
+/* filter-itemのセレクトボックス */
+.filters select {
+   font-size: 1rem;
+  /* 内側の余白 */
+  padding: 0.8rem 1rem;
+  /* 囲みのスタイル */
+  border: 1px solid #ccc;
+  border-radius: 0.3rem;
+}
 
 /* 画像カードが表示される領域 */
 #list {
@@ -185,5 +190,10 @@ th {
   font-size: 24px;
   padding: 8px 12px;
 }
+  /* スマホのときは .filter-item の横並びスタイルを無効にする */
+  .filter-item {
+    display: block;
+    gap: 0; /* gapもリセット */
+  }
 
 }
