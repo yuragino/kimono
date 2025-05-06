@@ -62,14 +62,15 @@
 
       // 現在のURLからクエリ文字列を取得してurlParamsに代入
       const urlParams = new URLSearchParams(window.location.search);
-      
-      // 'category' の値を取得してカテゴリを設定
-      const category = urlParams.get("category");
 
-      // カテゴリが有効であれば設定
-      if (category && categoryMap[category]) {
-        displayItems();
+      // 'category' の値を取得してカテゴリを設定
+      category = urlParams.get("category");
+
+      // カテゴリが有効であれば設定、それがなければデフォルトで「浴衣」
+      if (!category || !categoryMap[category]) {
+        category = "浴衣";
       }
+      displayItems();
     });
 
     // ボタンをクリックしたときにカテゴリ切り替えとURL更新
