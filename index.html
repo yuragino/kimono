@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>着物コーデ一覧</title>
+  <title>浴衣コーデ</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,7 +12,7 @@
 </head>
 
 <body>
-  <h1>着物コーデ一覧</h1>
+  <h1>浴衣コーデ</h1>
 
   <!-- 絞り込みメニューを囲む -->
   <div class="filters">
@@ -70,6 +70,8 @@
       if (!category || !categoryMap[category]) {
         category = "浴衣";
       }
+
+      updateTitle();
       displayItems();
     });
 
@@ -86,9 +88,25 @@
 
         // ページ遷移せずにurl更新
         window.history.pushState({}, '', url);
+
+        updateTitle();
         displayItems();
       }
     });
+
+    /*--------------------------------------
+      カテゴリに基づいてページタイトルと<h1>を更新する
+--------------------------------------*/
+    function updateTitle() {
+      // ページタイトルの更新
+      document.title = `${category}コーデ`;
+
+      // h1タグの内容も更新
+      const h1 = document.querySelector("h1");
+      if (h1) {
+        h1.textContent = `${category}コーデ`;
+      }
+    }
 
     /*--------------------------------------
       メイン処理：画面にカードを表示
