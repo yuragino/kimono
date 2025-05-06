@@ -58,15 +58,36 @@
     };
 
     /* ===== ページ読み込み時に実行 ===== */
-    displayItems();
+    window.addEventListener('DOMContentLoaded', (e) => {
 
-    // ボタンをクリックしたときにカテゴリ切り替えと再表示
+      // 現在のURLからクエリ文字列を取得してurlParamsに代入
+      const urlParams = new URLSearchParams(window.location.search);
+      
+      // 'category' の値を取得してカテゴリを設定
+      const category = urlParams.get("category");
+
+      // カテゴリが有効であれば設定
+      if (category && categoryMap[category]) {
+        displayItems();
+      }
+    });
+
+    // ボタンをクリックしたときにカテゴリ切り替えとURL更新
     document.getElementById("category-buttons").addEventListener("click", (e) => {
       if (e.target.tagName === "BUTTON") {
         category = e.target.dataset.category;
+
+        // 現在のURLをURLオブジェクトに変換
+        const url = new URL(window.location);
+
+        // URLのクエリパラメータを変更
+        url.searchParams.set('category', category);
+
+        // ページ遷移せずにurl更新
+        window.history.pushState({}, '', url);
         displayItems();
       }
-    })
+    });
 
     /*--------------------------------------
       メイン処理：画面にカードを表示
