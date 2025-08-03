@@ -19,22 +19,22 @@ body {
 }
 
 
-header{
+header {
   display: flex;
   justify-content: flex-end;
 }
 
-.header-nav{
+.header-nav {
   display: flex;
-  
+
 }
 
-.header-nav ul{
+.header-nav ul {
   display: flex;
   gap: 20px;
 }
 
-.header-nav li{
+.header-nav li {
   list-style: none;
 }
 
@@ -51,21 +51,21 @@ header{
   max-width: 700px;
 }
 
-.filter-item {
+.filter {
   margin-bottom: 1.5rem;
 }
 
-.filter-item p{
+.filter p {
   margin-bottom: 0.5rem;
 }
 
-#category-buttons {
+.category-buttons {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 0.5rem;
 }
 
-#category-buttons button {
+.category-buttons button {
   font-size: 1rem;
   padding: 0.5rem 0;
   cursor: pointer;
@@ -76,7 +76,7 @@ header{
   min-width: 10rem;
 }
 
-#category-buttons button:hover {
+.category-buttons button:hover {
   background-color: #fafafa;
 }
 
