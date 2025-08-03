@@ -48,31 +48,42 @@
             <img :src="stableUrl(url)" alt="着物画像" class="kimono-image" x-show="i === index">
           </template>
           <div class="image-label" x-text="fileName"></div>
-          <template x-if="images.length > 1">
-              <button class="prev" @click="prev">◀</button>
-              <button class="next" @click="next">▶</button>
-          </template>
+          <div x-show="images.length>1">
+            <button class="prev" @click="prev">◀</button>
+            <button class="next" @click="next">▶</button>
+          </div>
         </div>
 
         <details>
           <summary>サイズ詳細</summary>
           <table>
-            <tr><th>身丈</th><td x-text="item['身丈'] + 'cm'"></td></tr>
-            <tr><th>後幅</th><td x-text="item['後幅'] + 'cm'"></td></tr>
-            <tr><th>裄</th><td x-text="item['裄'] + 'cm'"></td></tr>
+            <tr>
+              <th>身丈</th>
+              <td x-text="item['身丈'] + 'cm'"></td>
+            </tr>
+            <tr>
+              <th>後幅</th>
+              <td x-text="item['後幅'] + 'cm'"></td>
+            </tr>
+            <tr>
+              <th>裄</th>
+              <td x-text="item['裄'] + 'cm'"></td>
+            </tr>
           </table>
         </details>
 
         <table>
-          <tr><th>推奨身長</th><td x-text="heightRange(item['身丈'])"></td></tr>
-          <tr><th>ヒップサイズ</th><td x-text="hipSize(item['後幅'])"></td></tr>
+          <tr>
+            <th>推奨身長</th>
+            <td x-text="heightRange(item['身丈'])"></td>
+          </tr>
+          <tr>
+            <th>ヒップサイズ</th>
+            <td x-text="hipSize(item['後幅'])"></td>
+          </tr>
         </table>
       </div>
     </template>
-  </div>
-
-  <div id="scroll-to-top">
-    <button @click="window.scrollTo({top:0, behavior:'smooth'})">▲ 上へ戻る</button>
   </div>
 </body>
 

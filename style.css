@@ -146,12 +146,8 @@ th {
 /* 前後ボタン */
 .image-container button {
   position: absolute;
-
   top: 50%;
-  /* 	親の中央に、要素の上端を合わせる */
   transform: translateY(-50%);
-  /* 要素自身の高さの半分を上にずらす */
-
   background: rgba(255, 255, 255, 0.7);
   border: none;
   font-size: 18px;
