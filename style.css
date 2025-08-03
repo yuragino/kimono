@@ -19,7 +19,7 @@ body {
 }
 
 /* 着物コーデ一覧 */
-h1 {
+.title {
   text-align: center;
   font-size: 2rem;
   margin-bottom: 2rem;
@@ -28,10 +28,8 @@ h1 {
 
 /* filter-itemのまとまり */
 .filters {
-  /* 横並び中央寄せ */
   display: flex;
   justify-content: center;
-  /* filter-item同士の間隔 */
   gap: 1.5rem;
   margin-bottom: 1.5rem;
   font-size: 1rem;
