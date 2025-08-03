@@ -1,6 +1,6 @@
 document.addEventListener('alpine:init', () => {
   Alpine.data('kimonoApp', () => ({
-    categoryMap: {
+    kimonoDataFiles: {
       "浴衣": "yukata.json",
       "単衣": "hitoe.json",
       "小紋": "komon.json",
@@ -14,51 +14,50 @@ document.addEventListener('alpine:init', () => {
     },
     category: "浴衣",
     sortBy: "身丈_asc",
-    items: [],
+    kimonoRecords: [],
     loading: true,
 
     init() {
       const urlParams = new URLSearchParams(window.location.search);
-      const cat = urlParams.get("category");
-      if (cat && this.categoryMap[cat]) this.category = cat;
-      this.loadItems();
+      this.category = urlParams.get("category");
+      this.loadKimonoRecords();
     },
 
-    setCategory(name) {
-      this.category = name;
-      const url = new URL(window.location);
-      url.searchParams.set('category', name);
-      window.history.pushState({}, '', url);
-      this.loadItems();
+    setCategory(categoryName) {
+      this.category = categoryName;
+      const urlObj = new URL(window.location);
+      urlObj.searchParams.set('category', categoryName);
+      window.history.pushState({}, '', urlObj);
+      this.loadKimonoRecords();
     },
 
-    async loadItems() {
+    async loadKimonoRecords() {
       this.loading = true;
       try {
-        const res = await fetch(`data/${this.categoryMap[this.category]}`);
-        this.items = await res.json();
-      } catch (e) {
-        console.error("読み込み失敗", e);
-        this.items = [];
+        const response = await fetch(`data/${this.kimonoDataFiles[this.category]}`);
+        this.kimonoRecords = await response.json();
+      } catch (error) {
+        console.error("読み込み失敗", error);
+        this.kimonoRecords = [];
+      } finally {
+        this.loading = false;
       }
-      this.loading = false;
     },
 
-    get sortedItems() {
-      return [...this.items].sort((a, b) => {
-        return this.sortBy === "身丈_asc"
-          ? a["身丈"] - b["身丈"]
-          : b["身丈"] - a["身丈"];
-      });
+    get sortedKimonoRecords() {
+      const compareByMitake = this.sortBy === "身丈_asc"
+        ? (a, b) => a["身丈"] - b["身丈"]
+        : (a, b) => b["身丈"] - a["身丈"];
+      return [...this.kimonoRecords].sort(compareByMitake);
     },
 
-    getHipSize(width) {
-      const map = {
+    getHipSize(backWidth) {
+      const hipSizeMap = {
         27: "84cm以下", 28: "89cm以下", 29: "94cm以下",
         30: "99cm以下", 31: "104cm以下", 32: "109cm以下",
         33: "114cm以下", 34: "119cm以下"
       };
-      return map[width] || "サイズ不明";
+      return hipSizeMap[backWidth] || "サイズ不明";
     },
 
     getHeightRange(mitake) {
@@ -67,20 +66,44 @@ document.addEventListener('alpine:init', () => {
         : `${mitake - 5}cm〜${mitake + 5}cm`;
     },
 
-    stableUrl(url) {
-      const match = url.match(/id=([^&]+)/);
-      return match ? `https://lh3.googleusercontent.com/d/${match[1]}` : url;
+    /**
+   * Google Drive の共有URLを直接表示可能な画像URLに変換する
+   * @param {string} driveShareUrl - Google Drive の共有リンク
+   * @returns {string} 表示可能な画像URL
+   */
+    convertGoogleDriveUrl(driveShareUrl) {
+      const urlObj = new URL(driveShareUrl);
+      const fileId = urlObj.searchParams.get("id");
+      return `https://lh3.googleusercontent.com/d/${fileId}`
     }
   }));
 
-  Alpine.data('imageSlider', item => ({
-    images: [
-      item["画像URL"],
-      ...["パターンb", "パターンc", "パターンd", "パターンe", "パターンf", "パターンg"].map(k => item[k]).filter(Boolean)
-    ],
-    index: 0,
-    fileName: item["ファイル名"].match(/(\d{3}[a-z]?)/)?.[1] || '',
-    prev() { this.index = (this.index - 1 + this.images.length) % this.images.length },
-    next() { this.index = (this.index + 1) % this.images.length }
+  Alpine.data('imageSlider', kimonoRecord => ({
+    mainImageUrl: kimonoRecord['画像URL'],
+    additionalImageKeys: ['パターンb', 'パターンc', 'パターンd', 'パターンe', 'パターンf', 'パターンg'],
+
+    // 追加画像URL配列を動的に生成
+    get additionalImageUrls() {
+      return this.additionalImageKeys.map(key => kimonoRecord[key]).filter(Boolean);
+    },
+
+    // メイン画像と追加画像をまとめた「全画像URLリスト」
+    get allImageUrls() {
+      return [this.mainImageUrl, ...this.additionalImageUrls];
+    },
+
+    currentIndex: 0,
+    fileName: kimonoRecord['ファイル名'].match(/(\d{3}[a-z]?)/)?.[1] || '',
+
+    prev() {
+      this.currentIndex =
+        (this.currentIndex - 1 + this.allImageUrls.length) %
+        this.allImageUrls.length;
+    },
+    next() {
+      this.currentIndex =
+        (this.currentIndex + 1) % this.allImageUrls.length;
+    },
   }));
 });
+// cSpell:ignore mitake
