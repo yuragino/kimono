@@ -52,7 +52,7 @@ document.addEventListener('alpine:init', () => {
       });
     },
 
-    hipSize(width) {
+    getHipSize(width) {
       const map = {
         27: "84cm以下", 28: "89cm以下", 29: "94cm以下",
         30: "99cm以下", 31: "104cm以下", 32: "109cm以下",
@@ -61,7 +61,7 @@ document.addEventListener('alpine:init', () => {
       return map[width] || "サイズ不明";
     },
 
-    heightRange(mitake) {
+    getHeightRange(mitake) {
       return this.category === "浴衣"
         ? `${mitake - 7}cm〜${mitake + 8}cm`
         : `${mitake - 5}cm〜${mitake + 5}cm`;
