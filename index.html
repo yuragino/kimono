@@ -16,7 +16,7 @@
     <h1 x-text="category + 'コーデ'" class="title"></h1>
 
     <div class="filter-item">
-      <label>カテゴリ選択：</label>
+      <p>カテゴリ選択：</p>
       <div id="category-buttons">
         <template x-for="(file, name) in categoryMap" :key="name">
           <button :data-category="name" @click="setCategory(name)">
@@ -28,7 +28,7 @@
     </div>
 
     <div class="filter-item">
-      <label for="sortBy">並べ替え：</label>
+      <p for="sortBy">並べ替え：</p>
       <select id="sortBy" x-model="sortBy" @change="loadItems">
         <option value="身丈_asc">身長が小さい順</option>
         <option value="身丈_desc">身長が大きい順</option>
