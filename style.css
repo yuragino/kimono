@@ -3,9 +3,7 @@
   padding: 0;
   box-sizing: border-box;
   max-width: 100%;
-  /* 画像が親要素をはみ出さないように設定 */
   height: auto;
-  /* 高さを自動調整 */
   font-family: "Noto Sans JP", sans-serif;
 }
 
@@ -20,15 +18,33 @@ body {
   padding: 2rem;
 }
 
-/* 着物コーデ一覧 */
-.title {
+
+header{
+  display: flex;
+  justify-content: flex-end;
+}
+
+.header-nav{
+  display: flex;
+  
+}
+
+.header-nav ul{
+  display: flex;
+  gap: 20px;
+}
+
+.header-nav li{
+  list-style: none;
+}
+
+.sub-title {
   text-align: center;
   font-size: 2rem;
   margin-bottom: 2rem;
   color: #444;
 }
 
-/* filter-itemのまとまり */
 .filter-wrapper {
   margin: 0 auto;
   font-size: 1rem;
@@ -49,7 +65,6 @@ body {
   gap: 0.5rem;
 }
 
-/* カテゴリ選ぶボタン */
 #category-buttons button {
   font-size: 1rem;
   padding: 0.5rem 0;
@@ -72,7 +87,6 @@ body {
   margin-top: 5px;
 }
 
-/* filter-itemのセレクトボックス */
 .filter-wrapper select {
   font-size: 1rem;
   padding: 0.8rem 1rem;
@@ -87,15 +101,12 @@ body {
 
 /* 画像カードが表示される領域 */
 #list {
-  /* 表形式 */
   display: grid;
   /* 自動で列数を決める。最低260px、最大で均等幅 */
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  /* card同士の間隔 */
   gap: 1.5rem;
 }
 
-/* 各画像カードの見た目 */
 .card {
   background-color: white;
   border-radius: 12px;
@@ -103,17 +114,14 @@ body {
   padding: 0.5rem;
 }
 
-/* カード内の画像の見た目 */
 .card img {
   border-radius: 8px;
 }
 
-/*「サイズ詳細」の上の余白 */
 details {
   margin-top: 0.5rem;
 }
 
-/* クリックして開く部分 */
 summary {
   font-weight: bold;
   cursor: pointer;
@@ -138,12 +146,10 @@ th {
   width: 40%;
 }
 
-/* カード内で画像がある部分 */
 .image-container {
   position: relative;
 }
 
-/* 前後ボタン */
 .image-container button {
   position: absolute;
   top: 50%;
@@ -156,17 +162,14 @@ th {
   border-radius: 50%;
 }
 
-/* 前へボタン */
 .image-container .prev {
   left: 0;
 }
 
-/* 次へボタン */
 .image-container .next {
   right: 0;
 }
 
-/* 画像番号を左下に表示 */
 .image-label {
   position: absolute;
   left: 4px;
@@ -175,28 +178,4 @@ th {
   color: #fff;
   padding: 2px 6px;
   border-radius: 4px;
-}
-
-#scroll-to-top {
-  display: none;
-  /* 初期状態で非表示 */
-  text-align: center;
-  margin: 2.5rem 0 1rem;
-}
-
-#scroll-to-top button {
-  background-color: #b04a4a;
-  color: #fff;
-  border: none;
-  padding: 0.8rem 2rem;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s;
-}
-
-#scroll-to-top button:hover {
-  background-color: #923f3f;
 }

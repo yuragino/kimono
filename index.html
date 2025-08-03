@@ -12,8 +12,15 @@
 </head>
 
 <body x-data="kimonoApp" x-init="init">
+  <header>
+    <nav class="header-nav">
+      <ul>
+        <li><a href="">管理画面</a></li>
+      </ul>
+    </nav>
+  </header>
   <div class="filter-wrapper">
-    <h1 x-text="category + 'コーデ'" class="title"></h1>
+    <h2 x-text="category + 'コーデ'" class="sub-title"></h2>
 
     <div class="filter-item">
       <p>カテゴリ選択：</p>
