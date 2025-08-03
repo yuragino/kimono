@@ -27,7 +27,7 @@ body {
 }
 
 /* filter-itemのまとまり */
-.filters {
+.filter-wrapper {
   display: flex;
   justify-content: center;
   gap: 1.5rem;
@@ -71,7 +71,7 @@ body {
 }
 
 /* filter-itemのセレクトボックス */
-.filters select {
+.filter-wrapper select {
    font-size: 1rem;
   /* 内側の余白 */
   padding: 0.8rem 1rem;
@@ -205,7 +205,7 @@ th {
 /* スマホの表示 */
 @media (max-width: 600px) {
   /* 絞り込みメニューたち */
-   .filters {
+   .filter-wrapper {
     flex-direction: column;
     align-items: stretch;
     gap: 1rem;
@@ -218,7 +218,7 @@ th {
   }
 
   /* 絞り込みメニューのセレクトボックス */
-  .filters select {
+  .filter-wrapper select {
     width: 100%;
   }
 
@@ -234,7 +234,7 @@ th {
     gap: 0; /* gapもリセット */
   }
 
-    .filters h1 {
+    .filter-wrapper h1 {
     order: -1; /* スマホでは上に */
   }
 
