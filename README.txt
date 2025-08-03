@@ -1,6 +1,7 @@
 kimono/
-├── index.html        // メインHTMLファイル,js含む
-├── style.css         // スタイルシート
+├── index.html        
+├── script.js          
+├── style.css      
 └── data/
     ├── yukata.json   // 浴衣データ
     ├── hitoe.json    // 単衣データ
