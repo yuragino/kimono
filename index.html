@@ -5,313 +5,75 @@
   <meta charset="UTF-8">
   <title>着物コーデ</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <script src="script.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
-  <!-- 絞り込みメニューを囲む -->
+<body x-data="kimonoApp" x-init="init">
   <div class="filters">
-    <h1>着物コーデ</h1>
+    <h1 x-text="category + 'コーデ'"></h1>
 
-    <!-- カテゴリ選択（ボタン） -->
-<div class="filter-item">
-  <label>カテゴリ選択：</label>
-  <div id="category-buttons">
-    <button data-category="浴衣">
-      浴衣
-      <span class="category-info">6〜9月</span>
-    </button>
-    <button data-category="単衣">
-      単衣
-      <span class="category-info">5,6,9,10月</span>
-    </button>
-    <button data-category="小紋">
-      小紋
-      <span class="category-info">10〜5月</span>
-    </button>
-    <button data-category="アンティーク">
-      アンティーク
-      <span class="category-info">10〜5月</span>
-    </button>
-  </div>
-</div>
+    <div class="filter-item">
+      <label>カテゴリ選択：</label>
+      <div id="category-buttons">
+        <template x-for="(file, name) in categoryMap" :key="name">
+          <button :data-category="name" @click="setCategory(name)">
+            <span x-text="name"></span>
+            <span class="category-info" x-text="seasonInfo[name]"></span>
+          </button>
+        </template>
+      </div>
+    </div>
 
-    <!-- 並べ替え機能 -->
     <div class="filter-item">
       <label for="sortBy">並べ替え：</label>
-      <select id="sortBy" onchange="displayItems()">
+      <select id="sortBy" x-model="sortBy" @change="loadItems">
         <option value="身丈_asc">身長が小さい順</option>
         <option value="身丈_desc">身長が大きい順</option>
       </select>
     </div>
-
   </div>
 
-  <!-- 選んだカテゴリに応じて画像カードが表示される場所 -->
-  <div id="list"></div>
+  <div id="list">
+    <template x-if="loading">
+      <p>読み込み中...</p>
+    </template>
 
-  <!-- 上に戻るボタン -->
+    <template x-for="item in sortedItems" :key="item['ファイル名']">
+      <div class="card">
+        <div class="image-container" x-data="imageSlider(item)">
+          <template x-for="(url, i) in images" :key="i">
+            <img :src="stableUrl(url)" alt="着物画像" class="kimono-image" x-show="i === index">
+          </template>
+          <div class="image-label" x-text="fileName"></div>
+          <template x-if="images.length > 1">
+              <button class="prev" @click="prev">◀</button>
+              <button class="next" @click="next">▶</button>
+          </template>
+        </div>
+
+        <details>
+          <summary>サイズ詳細</summary>
+          <table>
+            <tr><th>身丈</th><td x-text="item['身丈'] + 'cm'"></td></tr>
+            <tr><th>後幅</th><td x-text="item['後幅'] + 'cm'"></td></tr>
+            <tr><th>裄</th><td x-text="item['裄'] + 'cm'"></td></tr>
+          </table>
+        </details>
+
+        <table>
+          <tr><th>推奨身長</th><td x-text="heightRange(item['身丈'])"></td></tr>
+          <tr><th>ヒップサイズ</th><td x-text="hipSize(item['後幅'])"></td></tr>
+        </table>
+      </div>
+    </template>
+  </div>
+
   <div id="scroll-to-top">
-    <button onclick="scrollToTop()">▲ 上へ戻る</button>
+    <button @click="window.scrollTo({top:0, behavior:'smooth'})">▲ 上へ戻る</button>
   </div>
-
-  <!-- ここからJavaScript -->
-  <script>
-
-    let category = "浴衣"; // 初期カテゴリ
-
-    /* ===== 読み込むJSONファイルの指定 ===== */
-
-    const categoryMap = {
-      "浴衣": "yukata.json",
-      "単衣": "hitoe.json",
-      "小紋": "komon.json",
-      "アンティーク": "meisen.json"
-    };
-
-    /* ===== ページ読み込み時に実行 ===== */
-    window.addEventListener('DOMContentLoaded', (e) => {
-
-      // 現在のURLからクエリ文字列を取得してurlParamsに代入
-      const urlParams = new URLSearchParams(window.location.search);
-
-      // 'category' の値を取得してカテゴリを設定
-      category = urlParams.get("category");
-
-      // カテゴリが有効であれば設定、それがなければデフォルトで「浴衣」
-      if (!category || !categoryMap[category]) {
-        category = "浴衣";
-      }
-
-      updateTitle();
-      displayItems();
-    });
-
-    // ボタンをクリックしたときにカテゴリ切り替えとURL更新
-    document.getElementById("category-buttons").addEventListener("click", (e) => {
-      if (e.target.tagName === "BUTTON") {
-        category = e.target.dataset.category;
-
-        // 現在のURLをURLオブジェクトに変換
-        const url = new URL(window.location);
-
-        // URLのクエリパラメータを変更
-        url.searchParams.set('category', category);
-
-        // ページ遷移せずにurl更新
-        window.history.pushState({}, '', url);
-
-        updateTitle();
-        displayItems();
-      }
-    });
-
-    /*--------------------------------------
-      カテゴリに基づいてページタイトルと<h1>を更新する
---------------------------------------*/
-    function updateTitle() {
-      // ページタイトルの更新
-      document.title = `${category}コーデ`;
-
-      // h1タグの内容も更新
-      const h1 = document.querySelector("h1");
-      if (h1) {
-        h1.textContent = `${category}コーデ`;
-      }
-    }
-
-    /*--------------------------------------
-      メイン処理：画面にカードを表示
---------------------------------------*/
-
-    async function displayItems() {
-
-      // 並べ替え基準を取得 デフォルトはasc
-      const sortBy = document.getElementById("sortBy").value;
-
-      // 表示エリアに「読み込み中...」と出す
-      const list = document.getElementById("list");
-      list.innerHTML = "<p>読み込み中...</p>";
-
-      // 上へ戻るボタンを隠す
-      document.getElementById("scroll-to-top").style.display = "none";
-
-      try {
-
-        // カテゴリに対応するJSONデータを取得して配列に格納
-        const items = await fetchItems(category);
-
-        // itemsを並べ替えて配列に格納
-        const sortedItems = sortItems(items, sortBy);
-
-        // 「読み込み中」を消す
-        list.innerHTML = "";
-
-        // sortedItems配列内の各アイテムに対してカードを作る
-        sortedItems.forEach(item => {
-          // カードを生成
-          const card = createCard(item);
-          // 生成したカードを「List」要素に追加して画面表示
-          list.appendChild(card);
-        });
-
-        // 上へ戻るボタンを表示
-        document.getElementById("scroll-to-top").style.display = "block";
-
-      } catch (error) {
-        list.innerHTML = `<p>データの読み込みに失敗しました。</p>`;
-        console.error("JSON読み込みエラー:", error);
-      }
-    }
-
-    /*--------------------------------------
-        JSONデータ取得
-    --------------------------------------*/
-    async function fetchItems(category) {
-      // JSONファイルをとってくる
-      const response = await fetch(`data/${categoryMap[category]}`);
-      return await response.json();
-    }
-
-    /*--------------------------------------
-        ソート処理
-    --------------------------------------*/
-    function sortItems(items, sortBy) {
-      return items.sort((a, b) => {
-        if (sortBy === "身丈_asc") return a["身丈"] - b["身丈"];
-        if (sortBy === "身丈_desc") return b["身丈"] - a["身丈"];
-      });
-    }
-
-    /*--------------------------------------
-      HTML生成
-  --------------------------------------*/
-    // 1つのアイテムに対しての処理
-    function createCard(item) {
-
-      // カード用のdiv要素を作成し、クラス名を設定
-      const div = document.createElement("div");
-      div.className = "card";
-
-      // メイン画像URLを配列に追加
-      const imageUrls = [item["画像URL"]];
-
-      // 追加画像があれば順番に配列に追加
-      ["パターンb", "パターンc", "パターンd", "パターンe", "パターンf", "パターンg"].forEach(key => {
-        if (item[key]) imageUrls.push(item[key]);
-      });
-
-      // imageUrlsの各画像URL <img> タグに変換（最初の画像だけ表示）
-      // 画像番号を表示
-      const imagesHtml = imageUrls.map((url, index) => `
-    <img src="${stableUrl(url)}" alt="着物画像" class="kimono-image" style="${index === 0 ? '' : 'display:none'}">
-    <div class="image-label">${item["ファイル名"].match(/(\d{3}[a-z]?)/)?.[1] || ''}</div>
-  `).join('');
-
-      // 複数枚画像があるかどうかを判定
-      const isMultiple = imageUrls.length > 1;
-
-      div.innerHTML = `
-    <div class="image-container">
-      ${imagesHtml}
-      ${isMultiple ? `
-        <button class="prev">◀</button>
-        <button class="next">▶</button>
-      ` : ''}
-    </div>
-    <details>
-      <summary>サイズ詳細</summary>
-      <table>
-        <tr><th>身丈</th><td>${item["身丈"]}cm</td></tr>
-        <tr><th>後幅</th><td>${item["後幅"]}cm</td></tr>
-        <tr><th>裄</th><td>${item["裄"]}cm</td></tr>
-      </table>
-    </details>
-    <table>
-      <tr><th>推奨身長</th><td>${heightRange(item["身丈"])}</td></tr>
-      <tr><th>ヒップサイズ</th><td>${hipSize(item["後幅"])}</td></tr>
-    </table>
-  `;
-
-      // 複数画像がある場合にスライド機能追加
-      if (isMultiple) imageSlider(div, imageUrls);
-
-      return div;
-    }
-    /*--------------------------------------
-        画像のスライド機能追加
-    --------------------------------------*/
-    function imageSlider(div, imageUrls) {
-      const container = div.querySelector(".image-container");
-      const images = container.querySelectorAll(".kimono-image");
-      let currentIndex = 0;
-
-      const showImage = index => {
-        images.forEach((img, i) => {
-          img.style.display = i === index ? "" : "none";
-        });
-      };
-
-      container.querySelector(".prev").addEventListener("click", () => {
-        currentIndex = (currentIndex - 1 + images.length) % images.length;
-        showImage(currentIndex);
-      });
-
-      container.querySelector(".next").addEventListener("click", () => {
-        currentIndex = (currentIndex + 1) % images.length;
-        showImage(currentIndex);
-      });
-    }
-
-    /*--------------------------------------
-        ユーティリティ関数
-    --------------------------------------*/
-    /* ===== URL変換 ===== */
-    function stableUrl(originalUrl) {
-
-      // 「id=...」の部分を正規表現で取り出す
-      const match = originalUrl.match(/id=([^&]+)/);
-
-      // IDが取れたら画像用URLに変換、失敗したら元のURLを返す
-      return match ? `https://lh3.googleusercontent.com/d/${match[1]}` : originalUrl;
-
-    }
-
-    /* ===== 後幅からヒップサイズを計算 ===== */
-    function hipSize(width) {
-      const map = {
-        27: "84cm以下", 28: "89cm以下", 29: "94cm以下",
-        30: "99cm以下", 31: "104cm以下", 32: "109cm以下",
-        33: "114cm以下", 34: "119cm以下"
-      };
-
-      // 後幅の指定がない場合は「サイズ不明」と返す
-      return map[width] || "サイズ不明";
-    }
-
-    /* ===== 身丈から推奨身長を計算 ===== */
-    function heightRange(mitake) {
-
-      if (category == "浴衣") {
-        return `${mitake - 7}cm〜${mitake + 8}cm`;
-      } else {
-        return `${mitake - 5}cm〜${mitake + 5}cm`;
-      }
-    }
-
-    /* ===== 上に戻るボタン ===== */
-    function scrollToTop() {
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
-    }
-
-
-  </script>
 </body>
 
 </html>
