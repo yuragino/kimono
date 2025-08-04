@@ -12,13 +12,6 @@
 </head>
 
 <body x-data="kimonoApp" x-init="init">
-  <header>
-    <nav class="header-nav">
-      <ul>
-        <li><a href="">管理画面</a></li>
-      </ul>
-    </nav>
-  </header>
   <div class="filter-wrapper">
     <h2 x-text="category + 'コーデ'" class="sub-title"></h2>
 
@@ -51,8 +44,9 @@
     <template x-for="kimonoRecord in sortedKimonoRecords" :key="kimonoRecord['ファイル名']">
       <div class="card">
         <div class="image-container" x-data="imageSlider(kimonoRecord)">
-          <template x-for="(driveShareUrl, imageIndex) in allImageUrls" :key="imageIndex">
-            <img :src="convertGoogleDriveUrl(driveShareUrl)" class="kimono-image" x-show="imageIndex === currentIndex">
+          <template x-for="(driveShareUrl, loopIndex) in allImageUrls" :key="loopIndex">
+            <img :src="convertGoogleDriveUrl(driveShareUrl)" class="kimono-image"
+              x-show="loopIndex === currentImageIndex">
           </template>
           <div class="image-label" x-text="fileName"></div>
           <div x-show="allImageUrls.length>1">

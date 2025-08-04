@@ -92,17 +92,22 @@ document.addEventListener('alpine:init', () => {
       return [this.mainImageUrl, ...this.additionalImageUrls];
     },
 
-    currentIndex: 0,
-    fileName: kimonoRecord['ファイル名'].match(/(\d{3}[a-z]?)/)?.[1] || '',
+    currentImageIndex: 0,
+    fileName: kimonoRecord['ファイル名'].match(/\d{3}/)?.[0] || '',
 
     prev() {
-      this.currentIndex =
-        (this.currentIndex - 1 + this.allImageUrls.length) %
-        this.allImageUrls.length;
+      if (this.currentImageIndex === 0) {
+        this.currentImageIndex = this.allImageUrls.length - 1;
+      } else {
+        this.currentImageIndex--;
+      }
     },
     next() {
-      this.currentIndex =
-        (this.currentIndex + 1) % this.allImageUrls.length;
+      if (this.currentImageIndex === this.allImageUrls.length - 1) {
+        this.currentImageIndex = 0;
+      } else {
+        this.currentImageIndex++;
+      }
     },
   }));
 });
