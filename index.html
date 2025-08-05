@@ -14,7 +14,7 @@
 </head>
 
 <body x-data="kimonoApp" x-init="init">
-  <header>
+  <header x-show="!showFavorites">
     <h2 x-text="category + 'コーデ'"></h2>
     <ul class="center">
       <template x-for="(file, categoryName) in kimonoDataFiles" :key="categoryName">
@@ -94,29 +94,35 @@
 
   <div class="modal" x-show="showFavorites" @click.self="showFavorites = false">
     <div class="modal-content">
-      <h3>お気に入り一覧</h3>
-      <div @click="showFavorites=false"><i class="fa-solid fa-xmark"></i></div>
-      <p x-show="favoriteRecords.length === 0">お気に入りはありません。</p>
+      <div class="modal-header">
+        <h3>お気に入り一覧</h3>
+        <button class="close-btn" @click="showFavorites = false">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
 
-      <div class="list">
-        <template x-for="kimonoRecord in favoriteRecords" :key="kimonoRecord['ファイル名']">
-          <div class="card">
-            <div class="image-container" x-data="imageSlider(kimonoRecord)">
-              <template x-for="(driveShareUrl, loopIndex) in allImageUrls" :key="loopIndex">
-                <img :src="convertGoogleDriveUrl(driveShareUrl)" class="kimono-image"
-                  x-show="loopIndex === currentImageIndex">
-              </template>
-              <div x-show="allImageUrls.length>1" class="preview-btn">
-                <button class="prev" @click="prev"><i class="fa-solid fa-angles-left"></i></button>
-                <button class="next" @click="next"><i class="fa-solid fa-angles-right"></i></button>
+      <div class="modal-body">
+        <p x-show="favoriteRecords.length === 0">お気に入りはありません。</p>
+        <div class="list">
+          <template x-for="kimonoRecord in favoriteRecords" :key="kimonoRecord['ファイル名']">
+            <div class="card">
+              <div class="image-container" x-data="imageSlider(kimonoRecord)">
+                <template x-for="(driveShareUrl, loopIndex) in allImageUrls" :key="loopIndex">
+                  <img :src="convertGoogleDriveUrl(driveShareUrl)" class="kimono-image"
+                    x-show="loopIndex === currentImageIndex">
+                </template>
+                <div x-show="allImageUrls.length>1" class="preview-btn">
+                  <button class="prev" @click="prev"><i class="fa-solid fa-angles-left"></i></button>
+                  <button class="next" @click="next"><i class="fa-solid fa-angles-right"></i></button>
+                </div>
+                <div class="image-label" x-text="fileNumber"></div>
+                <button class="favorite-btn" @click="toggleFavorite(kimonoRecord['ファイル名'])">
+                  <i :class="isFavorite(kimonoRecord['ファイル名']) ? 'fa-solid fa-heart' : 'fa-regular fa-heart'"></i>
+                </button>
               </div>
-              <div class="image-label" x-text="fileNumber"></div>
-              <button class="favorite-btn" @click="toggleFavorite(kimonoRecord['ファイル名'])">
-                <i :class="isFavorite(kimonoRecord['ファイル名']) ? 'fa-solid fa-heart' : 'fa-regular fa-heart'"></i>
-              </button>
             </div>
-          </div>
-        </template>
+          </template>
+        </div>
       </div>
     </div>
   </div>
