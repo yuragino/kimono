@@ -1,3 +1,5 @@
+import { firestore } from "./firebase.js";
+const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
 document.addEventListener('alpine:init', () => {
   Alpine.data('kimonoApp', () => ({
     kimonoDataFiles: {
@@ -20,13 +22,40 @@ document.addEventListener('alpine:init', () => {
     favorites: [], //お気に入りにした画像のファイル名を格納
     showFavorites: false,
 
+    isAdmin: false,
+    rentals: [],  // 貸出中のファイル名を格納
+
     init() {
+      this.listenRentals();
+      this.checkAndCleanRentals();
       const saved = localStorage.getItem('kimonoFavorites');
       this.favorites = saved ? JSON.parse(saved) : [];
 
       const urlParams = new URLSearchParams(window.location.search);
       this.category = urlParams.get("category");
       this.loadKimonoRecords();
+    },
+
+    listenRentals() {
+      firestore.collection("rentals").onSnapshot(snapShot => {
+        this.rentals = snapShot.docs.map(doc => ({
+          id: doc.id,
+          createdAt: doc.data().createdAt.toDate()
+        }));
+        this.checkAndCleanRentals();
+      });
+    },
+
+    checkAndCleanRentals() {
+      const now = new Date();
+
+      this.rentals.forEach(rental => {
+        const createdAt = rental.createdAt;
+
+        if ((now - createdAt) > SEVEN_DAYS_MS) {
+          firestore.collection("rentals").doc(rental.id).delete();
+        }
+      });
     },
 
     setCategory(categoryName) {
@@ -100,7 +129,35 @@ document.addEventListener('alpine:init', () => {
 
     isFavorite(fileName) {
       return this.favorites.includes(fileName);
-    }
+    },
+
+    adminLogin() {
+      const code = prompt("管理者パスコードを入力してください");
+      if (code === "1234") {
+        this.isAdmin = true;
+      } else {
+        alert("パスコードが違います");
+      }
+    },
+
+    logoutAdmin() {
+      this.isAdmin = false;
+    },
+
+    isRented(fileName) {
+      return this.rentals.some(record => record.id === fileName);
+    },
+
+    async toggleRental(fileName) {
+      if (this.isRented(fileName)) {
+        await firestore.collection("rentals").doc(fileName).delete();
+      } else {
+        await firestore.collection("rentals").doc(fileName).set({
+          rented: true,
+          createdAt: new Date(),
+        })
+      }
+    },
 
   }));
 
@@ -137,4 +194,4 @@ document.addEventListener('alpine:init', () => {
     },
   }));
 });
-// cSpell:ignore mitake
+// cSpell:ignore mitake firestore

@@ -236,7 +236,6 @@ th {
   display: flex;
   align-items: center;
   justify-content: center;
-  /* padding-top: 20px;  */
 }
 
 .modal-content {
@@ -260,8 +259,6 @@ th {
 
 .modal-header h3 {
   font-size: 1.2rem;
-  font-weight: bold;
-  margin: 0;
   color: #444;
 }
 
@@ -309,4 +306,33 @@ th {
   max-height: 400px;
   object-fit: contain;
   border-bottom: 1px solid #ddd;
+}
+
+.status-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background-color: rgba(231, 76, 60, 0.9); /* 赤 */
+  color: white;
+  font-size: 0.8rem;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.rental-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background-color: rgba(46, 204, 113, 0.9); /* 緑 */
+  color: white;
+  border: none;
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.rental-btn:hover {
+  background-color: rgba(39, 174, 96, 1);
 }

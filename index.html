@@ -5,8 +5,10 @@
   <meta charset="UTF-8">
   <title>着物コーデ</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore-compat.js"></script>
+  <script type="module" src="script.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-  <script src="script.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
     integrity="sha384-...." crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -23,8 +25,10 @@
     </ul>
     <ul class="right-side">
       <li @click="showFavorites = true"><i class="fa-regular fa-heart"></i></li>
-      <li>管理者ログイン</li>
+      <li x-show="!isAdmin" @click="adminLogin">管理者ログイン</li>
+      <li x-show="isAdmin" @click="logoutAdmin">ログアウト</li>
     </ul>
+
   </header>
 
   <div class="filter-wrapper">
@@ -57,6 +61,13 @@
             <button class="favorite-btn" @click="toggleFavorite(kimonoRecord['ファイル名'])">
               <i :class="isFavorite(kimonoRecord['ファイル名']) ? 'fa-solid fa-heart' : 'fa-regular fa-heart'"></i>
             </button>
+            <div class="status-badge" x-show="isRented(kimonoRecord['ファイル名'])">貸出中</div>
+
+            <!-- 管理者モード用貸出切替ボタン -->
+            <button x-show="isAdmin" class="rental-btn" @click="toggleRental(kimonoRecord['ファイル名'])">
+              <span x-text="isRented(kimonoRecord['ファイル名']) ? '貸出解除' : '貸出登録'"></span>
+            </button>
+
           </div>
 
           <details>
