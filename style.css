@@ -7,7 +7,6 @@
   font-family: "Noto Sans JP", sans-serif;
 }
 
-
 html {
   font-size: 16px;
 }
@@ -15,27 +14,42 @@ html {
 body {
   background-color: #fafafa;
   color: #333;
-  padding: 2rem;
 }
 
 
 header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  padding: 0 2rem;
+  align-items: center;
+  background-color: #fafafa;
 }
 
-.header-nav {
+header ul {
   display: flex;
-
-}
-
-.header-nav ul {
-  display: flex;
-  gap: 20px;
-}
-
-.header-nav li {
   list-style: none;
+}
+
+header ul li {
+  display: inline-block;
+  cursor: pointer;
+  padding: 1rem 2rem;
+}
+
+header ul li:hover {
+  background-color: antiquewhite;
+}
+
+header .right-side {
+  display: flex;
+  align-items: center;
+}
+
+header .right-side li {
+  padding: 1rem;
 }
 
 .sub-title {
@@ -99,8 +113,12 @@ header {
   width: 100%;
 }
 
+main {
+  padding: 0 2rem;
+}
+
 /* 画像カードが表示される領域 */
-#list {
+.list {
   display: grid;
   /* 自動で列数を決める。最低260px、最大で均等幅 */
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -150,7 +168,7 @@ th {
   position: relative;
 }
 
-.image-container button {
+.preview-btn button {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);

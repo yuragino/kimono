@@ -8,84 +8,86 @@
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
   <script src="script.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    integrity="sha384-...." crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body x-data="kimonoApp" x-init="init">
-  <div class="filter-wrapper">
-    <h2 x-text="category + 'コーデ'" class="sub-title"></h2>
-
-    <div class="filter">
-      <p>カテゴリ選択：</p>
-      <div class="category-buttons">
+  <header>
+    <h2 x-text="category + 'コーデ'"></h2>
+      <ul>
         <template x-for="(file, categoryName) in kimonoDataFiles" :key="categoryName">
-          <button @click="setCategory(categoryName)">
-            <span x-text="categoryName"></span>
-            <span class="category-info" x-text="seasonInfo[categoryName]"></span>
-          </button>
+          <li @click="setCategory(categoryName)" x-text="categoryName"></li>
         </template>
-      </div>
-    </div>
+      </ul>
+    <ul class="right-side">
+      <li><i class="fa-regular fa-heart"></i></li>
+      <li>管理者ログイン</li>
+    </ul>
+  </header>
 
+  <div class="filter-wrapper">
     <div class="filter">
-      <p>並べ替え：</p>
       <select x-model="sortBy" @change="loadKimonoRecords">
         <option value="身丈_asc">身長が小さい順</option>
         <option value="身丈_desc">身長が大きい順</option>
       </select>
     </div>
   </div>
+  <main>
 
-  <div id="list">
-    <template x-if="loading">
-      <p>読み込み中...</p>
-    </template>
+    <div class="list">
+      <template x-if="loading">
+        <p>読み込み中...</p>
+      </template>
 
-    <template x-for="kimonoRecord in sortedKimonoRecords" :key="kimonoRecord['ファイル名']">
-      <div class="card">
-        <div class="image-container" x-data="imageSlider(kimonoRecord)">
-          <template x-for="(driveShareUrl, loopIndex) in allImageUrls" :key="loopIndex">
-            <img :src="convertGoogleDriveUrl(driveShareUrl)" class="kimono-image"
-              x-show="loopIndex === currentImageIndex">
-          </template>
-          <div class="image-label" x-text="fileName"></div>
-          <div x-show="allImageUrls.length>1">
-            <button class="prev" @click="prev">◀</button>
-            <button class="next" @click="next">▶</button>
+      <template x-for="kimonoRecord in sortedKimonoRecords" :key="kimonoRecord['ファイル名']">
+        <div class="card">
+          <div class="image-container" x-data="imageSlider(kimonoRecord)">
+            <template x-for="(driveShareUrl, loopIndex) in allImageUrls" :key="loopIndex">
+              <img :src="convertGoogleDriveUrl(driveShareUrl)" class="kimono-image"
+                x-show="loopIndex === currentImageIndex">
+            </template>
+            <div x-show="allImageUrls.length>1" class="preview-btn">
+              <button class="prev" @click="prev">◀</button>
+              <button class="next" @click="next">▶</button>
+            </div>
+            <div class="image-label" x-text="fileName"></div>
           </div>
-        </div>
 
-        <details>
-          <summary>サイズ詳細</summary>
+          <details>
+            <summary>サイズ詳細</summary>
+            <table>
+              <tr>
+                <th>身丈</th>
+                <td x-text="kimonoRecord['身丈'] + 'cm'"></td>
+              </tr>
+              <tr>
+                <th>後幅</th>
+                <td x-text="kimonoRecord['後幅'] + 'cm'"></td>
+              </tr>
+              <tr>
+                <th>裄</th>
+                <td x-text="kimonoRecord['裄'] + 'cm'"></td>
+              </tr>
+            </table>
+          </details>
+
           <table>
             <tr>
-              <th>身丈</th>
-              <td x-text="kimonoRecord['身丈'] + 'cm'"></td>
+              <th>推奨身長</th>
+              <td x-text="getHeightRange(kimonoRecord['身丈'])"></td>
             </tr>
             <tr>
-              <th>後幅</th>
-              <td x-text="kimonoRecord['後幅'] + 'cm'"></td>
-            </tr>
-            <tr>
-              <th>裄</th>
-              <td x-text="kimonoRecord['裄'] + 'cm'"></td>
+              <th>ヒップサイズ</th>
+              <td x-text="getHipSize(kimonoRecord['後幅'])"></td>
             </tr>
           </table>
-        </details>
-
-        <table>
-          <tr>
-            <th>推奨身長</th>
-            <td x-text="getHeightRange(kimonoRecord['身丈'])"></td>
-          </tr>
-          <tr>
-            <th>ヒップサイズ</th>
-            <td x-text="getHipSize(kimonoRecord['後幅'])"></td>
-          </tr>
-        </table>
-      </div>
-    </template>
-  </div>
+        </div>
+      </template>
+    </div>
+  </main>
 </body>
 
 </html>
