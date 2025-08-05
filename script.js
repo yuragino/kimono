@@ -17,7 +17,13 @@ document.addEventListener('alpine:init', () => {
     kimonoRecords: [],
     loading: true,
 
+    favorites: [], //お気に入りにした画像のファイル名を格納
+    showFavorites: false,
+
     init() {
+      const saved = localStorage.getItem('kimonoFavorites');
+      this.favorites = saved ? JSON.parse(saved) : [];
+
       const urlParams = new URLSearchParams(window.location.search);
       this.category = urlParams.get("category");
       this.loadKimonoRecords();
@@ -75,7 +81,27 @@ document.addEventListener('alpine:init', () => {
       const urlObj = new URL(driveShareUrl);
       const fileId = urlObj.searchParams.get("id");
       return `https://lh3.googleusercontent.com/d/${fileId}`
+    },
+
+    get favoriteRecords() {
+      return this.kimonoRecords.filter(record =>
+        this.favorites.includes(record['ファイル名'])
+      );
+    },
+
+    toggleFavorite(fileName) {
+      if (this.favorites.includes(fileName)) {
+        this.favorites = this.favorites.filter(f => f !== fileName);
+      } else {
+        this.favorites.push(fileName);
+      }
+      localStorage.setItem('kimonoFavorites', JSON.stringify(this.favorites));
+    },
+
+    isFavorite(fileName) {
+      return this.favorites.includes(fileName);
     }
+
   }));
 
   Alpine.data('imageSlider', kimonoRecord => ({
@@ -93,7 +119,7 @@ document.addEventListener('alpine:init', () => {
     },
 
     currentImageIndex: 0,
-    fileName: kimonoRecord['ファイル名'].match(/\d{3}/)?.[0] || '',
+    fileNumber: kimonoRecord['ファイル名'].match(/\d{3}/)?.[0] || '',
 
     prev() {
       if (this.currentImageIndex === 0) {
