@@ -16,7 +16,7 @@
 <body x-data="kimonoApp" x-init="init">
   <header>
     <h2 x-text="category + 'コーデ'"></h2>
-      <ul>
+      <ul class="center">
         <template x-for="(file, categoryName) in kimonoDataFiles" :key="categoryName">
           <li @click="setCategory(categoryName)" x-text="categoryName"></li>
         </template>

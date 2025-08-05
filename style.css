@@ -39,17 +39,20 @@ header ul li {
   padding: 1rem 2rem;
 }
 
-header ul li:hover {
+header .center li:hover {
   background-color: antiquewhite;
 }
 
 header .right-side {
-  display: flex;
   align-items: center;
 }
 
 header .right-side li {
   padding: 1rem;
+}
+
+header .right-side li:hover {
+  opacity: 0.6;
 }
 
 .sub-title {
