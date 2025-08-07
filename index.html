@@ -13,32 +13,40 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
     integrity="sha384-...." crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="additional.css">
 </head>
 
 <body x-data="kimonoApp" x-init="init">
-  <header x-show="!showFavorites">
-    <h2 x-text="category + 'コーデ'"></h2>
-    <ul class="center">
-      <template x-for="(file, categoryName) in kimonoDataFiles" :key="categoryName">
-        <li @click="setCategory(categoryName)" x-text="categoryName"></li>
-      </template>
-    </ul>
-    <ul class="right-side">
-      <li @click="showFavorites = true"><i class="fa-regular fa-heart"></i></li>
-      <li x-show="!isAdmin" @click="adminLogin">管理者ログイン</li>
-      <li x-show="isAdmin" @click="logoutAdmin">ログアウト</li>
-    </ul>
-
-  </header>
-
-  <div class="filter-wrapper">
-    <div class="filter">
-      <select x-model="sortBy" @change="loadKimonoRecords">
-        <option value="身丈_asc">身長が小さい順</option>
-        <option value="身丈_desc">身長が大きい順</option>
-      </select>
+  <header x-show="!showFavorites" x-data="{ active: false }">
+    <div class="header-inner">
+      <h2 x-text="category + 'コーデ'"></h2>
+      <div class="mobile-right-side">
+        <div><i @click="showFavorites = true" class="fa-regular fa-heart"></i></div>
+        <button class="hamburger" :class="{ 'active': active }" @click="active = !active">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+      <ul class="center" :class="{ 'active': active }">
+        <template x-for="(file, categoryName) in kimonoDataFiles">
+          <li @click="setCategory(categoryName)" x-text="categoryName"
+            :class="{ 'active-category': categoryName === category }"></li>
+        </template>
+        <li @click="showFavorites = true"><i class="fa-regular fa-heart"></i></li>
+        <li class="select-box">
+          <select id="sort-select" x-model="sortBy" @change="loadKimonoRecords">
+            <option value="身丈_asc">身長が小さい順</option>
+            <option value="身丈_desc">身長が大きい順</option>
+          </select>
+          <i class="fa-solid fa-circle-chevron-down"></i>
+        </li>
+      </ul>
+      <ul class="right-side">
+        <li x-show="isAdmin" @click="logoutAdmin">ログアウト</li>
+      </ul>
     </div>
-  </div>
+  </header>
   <main>
 
     <div class="list">
@@ -102,6 +110,15 @@
       </template>
     </div>
   </main>
+  <div class="back-to-top" @click="window.scrollTo({ top: 0, behavior: 'smooth' })">
+    <i class="fa-solid fa-arrow-up"></i> TOPへ戻る
+  </div>
+
+  <footer>
+    <small>&copy; 2025 Kimono コーデ</small>
+    <span x-show="!isAdmin" @click="adminLogin" class="admin-link">管理者専用</span>
+  </footer>
+
 
   <div class="modal" x-show="showFavorites" @click.self="showFavorites = false">
     <div class="modal-content">

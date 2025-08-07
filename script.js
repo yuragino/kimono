@@ -48,10 +48,8 @@ document.addEventListener('alpine:init', () => {
 
     checkAndCleanRentals() {
       const now = new Date();
-
       this.rentals.forEach(rental => {
         const createdAt = rental.createdAt;
-
         if ((now - createdAt) > SEVEN_DAYS_MS) {
           firestore.collection("rentals").doc(rental.id).delete();
         }
@@ -132,11 +130,11 @@ document.addEventListener('alpine:init', () => {
     },
 
     adminLogin() {
-      const code = prompt("管理者パスコードを入力してください");
+      const code = prompt("管理者でない場合はキャンセルを押してください。");
       if (code === "1234") {
         this.isAdmin = true;
       } else {
-        alert("パスコードが違います");
+        alert("パスコードが間違っています。");
       }
     },
 
