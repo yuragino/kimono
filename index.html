@@ -29,7 +29,7 @@
         </button>
       </div>
       <ul class="center" :class="{ 'active': active }">
-        <template x-for="(file, categoryName) in kimonoDataFiles">
+        <template x-for="(categoryData, categoryName) in kimonoCategories">
           <li @click="setCategory(categoryName)" x-text="categoryName"
             :class="{ 'active-category': categoryName === category }"></li>
         </template>

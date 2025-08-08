@@ -2,19 +2,26 @@ import { firestore } from "./firebase.js";
 const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
 document.addEventListener('alpine:init', () => {
   Alpine.data('kimonoApp', () => ({
-    kimonoDataFiles: {
-      "浴衣": "yukata.json",
-      "単衣": "hitoe.json",
-      "小紋": "komon.json",
-      "アンティーク": "meisen.json"
+    kimonoCategories: {
+      "浴衣": {
+        fileName: "yukata.json",
+        season: "6〜9月"
+      },
+      "単衣": {
+        fileName: "hitoe.json",
+        season: "5,6,9,10月"
+      },
+      "小紋": {
+        fileName: "komon.json",
+        season: "10〜5月"
+      },
+      "アンティーク": {
+        fileName: "meisen.json",
+        season: "10〜5月"
+      }
     },
-    seasonInfo: {
-      "浴衣": "6〜9月",
-      "単衣": "5,6,9,10月",
-      "小紋": "10〜5月",
-      "アンティーク": "10〜5月"
-    },
-    category: "浴衣",
+
+    category: new URLSearchParams(location.search).get('category') ?? '浴衣',
     sortBy: "身丈_asc",
     kimonoRecords: [],
     loading: true,
@@ -25,14 +32,23 @@ document.addEventListener('alpine:init', () => {
     isAdmin: false,
     rentals: [],  // 貸出中のファイル名を格納
 
+    get sortedKimonoRecords() {
+      const compareByMitake = this.sortBy === "身丈_asc"
+        ? (a, b) => a["身丈"] - b["身丈"]
+        : (a, b) => b["身丈"] - a["身丈"];
+      return [...this.kimonoRecords].sort(compareByMitake);
+    },
+
+    get favoriteRecords() {
+      return this.kimonoRecords.filter(record =>
+        this.favorites.includes(record['ファイル名'])
+      );
+    },
+
     init() {
       this.listenRentals();
-      this.checkAndCleanRentals();
       const saved = localStorage.getItem('kimonoFavorites');
       this.favorites = saved ? JSON.parse(saved) : [];
-
-      const urlParams = new URLSearchParams(window.location.search);
-      this.category = urlParams.get("category");
       this.loadKimonoRecords();
     },
 
@@ -67,7 +83,8 @@ document.addEventListener('alpine:init', () => {
     async loadKimonoRecords() {
       this.loading = true;
       try {
-        const response = await fetch(`data/${this.kimonoDataFiles[this.category]}`);
+        const fileName = this.kimonoCategories[this.category].fileName;
+        const response = await fetch(`data/${fileName}`);
         this.kimonoRecords = await response.json();
       } catch (error) {
         console.error("読み込み失敗", error);
@@ -77,12 +94,6 @@ document.addEventListener('alpine:init', () => {
       }
     },
 
-    get sortedKimonoRecords() {
-      const compareByMitake = this.sortBy === "身丈_asc"
-        ? (a, b) => a["身丈"] - b["身丈"]
-        : (a, b) => b["身丈"] - a["身丈"];
-      return [...this.kimonoRecords].sort(compareByMitake);
-    },
 
     getHipSize(backWidth) {
       const hipSizeMap = {
@@ -99,21 +110,10 @@ document.addEventListener('alpine:init', () => {
         : `${mitake - 5}cm〜${mitake + 5}cm`;
     },
 
-    /**
-   * Google Drive の共有URLを直接表示可能な画像URLに変換する
-   * @param {string} driveShareUrl - Google Drive の共有リンク
-   * @returns {string} 表示可能な画像URL
-   */
     convertGoogleDriveUrl(driveShareUrl) {
       const urlObj = new URL(driveShareUrl);
       const fileId = urlObj.searchParams.get("id");
       return `https://lh3.googleusercontent.com/d/${fileId}`
-    },
-
-    get favoriteRecords() {
-      return this.kimonoRecords.filter(record =>
-        this.favorites.includes(record['ファイル名'])
-      );
     },
 
     toggleFavorite(fileName) {
@@ -162,6 +162,8 @@ document.addEventListener('alpine:init', () => {
   Alpine.data('imageSlider', kimonoRecord => ({
     mainImageUrl: kimonoRecord['画像URL'],
     additionalImageKeys: ['パターンb', 'パターンc', 'パターンd', 'パターンe', 'パターンf', 'パターンg'],
+    currentImageIndex: 0,
+    fileNumber: kimonoRecord['ファイル名'].match(/\d{3}/)?.[0] || '',
 
     // 追加画像URL配列を動的に生成
     get additionalImageUrls() {
@@ -172,9 +174,6 @@ document.addEventListener('alpine:init', () => {
     get allImageUrls() {
       return [this.mainImageUrl, ...this.additionalImageUrls];
     },
-
-    currentImageIndex: 0,
-    fileNumber: kimonoRecord['ファイル名'].match(/\d{3}/)?.[0] || '',
 
     prev() {
       if (this.currentImageIndex === 0) {
