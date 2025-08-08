@@ -64,6 +64,7 @@ header ul li:hover {
 }
 
 select {
+  font-size: 1rem;
   padding: 0.5rem 1rem;
   border: 1px solid #ccc;
   border-radius: 0.3rem;
@@ -260,7 +261,11 @@ footer {
 
   .mobile-right-side {
     display: flex;
-    gap: 15px;
+    gap: 25px;
+  }
+
+  .mobile-right-side i {
+    font-size: large;
   }
 
   ul li {
@@ -342,7 +347,7 @@ footer {
 
   .select-box .fa-circle-chevron-down {
     position: absolute;
-    top: 23px;
+    top: 26px;
     left: 183px;
     pointer-events: none;
     color: #eac089;
