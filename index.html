@@ -89,14 +89,23 @@
             <button class="favorite-btn" @click="toggleFavorite(kimonoRecord['ファイル名'])">
               <i :class="isFavorite(kimonoRecord['ファイル名']) ? 'fa-solid fa-heart' : 'fa-regular fa-heart'"></i>
             </button>
-            <!-- 貸出予約ラベル -->
-            <div class="status-label" x-show="isRented(kimonoRecord['ファイル名'])"
-              x-text="getRentalPeriodText(kimonoRecord['ファイル名'])"></div>
-            <!-- 管理者モード用貸出切替ボタン -->
-            <button x-show="isAdmin" class="rental-btn"
-              @click="isRented(kimonoRecord['ファイル名']) ? toggleRental(kimonoRecord['ファイル名']) : openRentalModal(kimonoRecord['ファイル名'])">
-              <span x-text="isRented(kimonoRecord['ファイル名']) ? '貸出解除' : '貸出登録'"></span>
-            </button>
+            <!-- 貸出登録ラベル、ボタン -->
+            <div class="status-overlay">
+              <template x-for="rental in rentalsFor(kimonoRecord['ファイル名'])" :key="rental.id">
+                <div class="status-row">
+                  <div class="status-label" x-text="formatRentalPeriod(rental)"></div>
+                  <div x-show="isAdmin">
+                    <button class="rental-btn" @click="cancelRental(rental.id)">貸出解除</button>
+                  </div>
+                </div>
+              </template>
+              <div class="rental-add" x-show="isAdmin">
+                <button class="rental-btn" @click="openRentalModal(kimonoRecord['ファイル名'])">
+                  貸出登録
+                </button>
+              </div>
+            </div>
+            
           </div>
 
           <details>
