@@ -54,7 +54,6 @@ document.addEventListener('alpine:init', () => {
       );
     },
 
-
     listenRentals() {
       firestore.collection("rentals").onSnapshot(snapShot => {
         this.rentals = snapShot.docs.map(doc => ({
@@ -134,7 +133,9 @@ document.addEventListener('alpine:init', () => {
 
     adminLogin() {
       const code = prompt("管理者でない場合はキャンセルを押してください。");
-      if (code === "1234") {
+      if (!code) return;
+      const storedHash = "81dc9bdb52d04dc20036dbd8313ed055"; // MD5ハッシュ
+      if (md5(code) === storedHash) {
         this.isAdmin = true;
       } else {
         alert("パスコードが間違っています。");
