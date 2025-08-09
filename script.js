@@ -5,19 +5,19 @@ document.addEventListener('alpine:init', () => {
     kimonoCategories: {
       "浴衣": {
         fileName: "yukata.json",
-        season: "6〜9月"
+        seasonMonths: [6, 7, 8, 9]
       },
       "単衣": {
         fileName: "hitoe.json",
-        season: "5,6,9,10月"
+        seasonMonths: [5, 6, 9, 10]
       },
       "小紋": {
         fileName: "komon.json",
-        season: "10〜5月"
+        seasonMonths: [10, 11, 12, 1, 2, 3, 4, 5]
       },
       "アンティーク": {
         fileName: "meisen.json",
-        season: "10〜5月"
+        seasonMonths: [10, 11, 12, 1, 2, 3, 4, 5]
       }
     },
 
