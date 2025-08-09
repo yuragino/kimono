@@ -33,7 +33,7 @@ document.addEventListener('alpine:init', () => {
     rentals: [],  // 貸出中のファイル名を格納
 
     showRentalModal: false,
-    rentalDate: '',
+    rentalDate: new Date().toISOString().slice(0, 10),
     currentRentalFileName: '',
     showOnlyRented: false,  //予約のみに絞り込み
 
@@ -155,7 +155,7 @@ document.addEventListener('alpine:init', () => {
       const rental = this.rentals.find(record => record.id === fileName);
       this.rentalDate = rental && rental.rentalDate
         ? rental.rentalDate.toISOString().substr(0, 10)
-        : '';
+        : new Date().toISOString().substr(0, 10);
       this.showRentalModal = true;
     },
 
@@ -216,7 +216,7 @@ document.addEventListener('alpine:init', () => {
       const options = { month: "numeric", day: "numeric" };
       const startStr = rentalRecord.rentalPeriodStart.toLocaleDateString("ja-JP", options);
       const endStr = rentalRecord.rentalPeriodEnd.toLocaleDateString("ja-JP", options);
-      return `貸出予約 ${startStr} 〜 ${endStr}`;
+      return `貸出予約中 ${startStr} 〜 ${endStr}`;
     },
 
     async toggleRental(fileName) {
