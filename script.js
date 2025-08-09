@@ -36,33 +36,7 @@ document.addEventListener('alpine:init', () => {
     rentalDate: '',
     currentRentalFileName: '',
 
-    openRentalModal(fileName) {
-      this.currentRentalFileName = fileName;
-      const rental = this.rentals.find(r => r.id === fileName);
-      this.rentalDate = rental && rental.rentalDate
-        ? rental.rentalDate.toISOString().substr(0, 10)
-        : '';
-      this.showRentalModal = true;
-    },
 
-    closeRentalModal() {
-      this.showRentalModal = false;
-      this.rentalDate = '';
-      this.currentRentalFileName = '';
-    },
-
-    async submitRental() {
-      if (!this.rentalDate) {
-        alert("貸出日を入力してください。");
-        return;
-      }
-      await firestore.collection("rentals").doc(this.currentRentalFileName).set({
-        rented: true,
-        createdAt: new Date(),
-        rentalDate: new Date(this.rentalDate),
-      });
-      this.closeRentalModal();
-    },
     init() {
       this.listenRentals();
 
@@ -83,27 +57,6 @@ document.addEventListener('alpine:init', () => {
       return this.kimonoRecords.filter(record =>
         this.favorites.includes(record['ファイル名'])
       );
-    },
-
-    listenRentals() {
-      firestore.collection("rentals").onSnapshot(snapShot => {
-        this.rentals = snapShot.docs.map(doc => ({
-          id: doc.id,
-          createdAt: doc.data().createdAt.toDate(),
-          rentalDate: doc.data().rentalDate ? doc.data().rentalDate.toDate() : null,
-        }));
-        this.checkAndCleanRentals();
-      });
-    },
-
-    checkAndCleanRentals() {
-      const now = new Date();
-      this.rentals.forEach(rental => {
-        const createdAt = rental.createdAt;
-        if ((now - createdAt) > SEVEN_DAYS_MS) {
-          firestore.collection("rentals").doc(rental.id).delete();
-        }
-      });
     },
 
     setCategory(categoryName) {
@@ -191,42 +144,74 @@ document.addEventListener('alpine:init', () => {
       this.isAdmin = false;
     },
 
-    // isRented(fileName) {
-    //   return this.rentals.some(record => record.id === fileName);
-    // },
+    openRentalModal(fileName) {
+      this.currentRentalFileName = fileName;
+      const rental = this.rentals.find(record => record.id === fileName);
+      this.rentalDate = rental && rental.rentalDate
+        ? rental.rentalDate.toISOString().substr(0, 10)
+        : '';
+      this.showRentalModal = true;
+    },
+
+    closeRentalModal() {
+      this.showRentalModal = false;
+      this.rentalDate = '';
+      this.currentRentalFileName = '';
+    },
+
+    listenRentals() {
+      firestore.collection("rentals").onSnapshot(snapShot => {
+        this.rentals = snapShot.docs.map(doc => ({
+          id: doc.id,
+          createdAt: doc.data().createdAt.toDate(),
+          rentalDate: doc.data().rentalDate.toDate(),
+          rentalPeriodStart: doc.data().rentalPeriodStart.toDate(),
+          rentalPeriodEnd: doc.data().rentalPeriodEnd.toDate(),
+        }));
+        this.checkAndCleanRentals();
+      });
+    },
+
+    checkAndCleanRentals() {
+      const now = new Date();
+      this.rentals.forEach(rental => {
+        if (now > rental.rentalPeriodEnd) {
+          firestore.collection("rentals").doc(rental.id).delete();
+        }
+      });
+    },
+
+    async submitRental() {
+      if (this.rentalDate === "") {
+        alert("貸出日を入力してください。");
+        return;
+      }
+      const rentalDateObj = new Date(this.rentalDate);
+      const ONE_WEEK_MS = 7 * 24 * 60 * 60 * 1000;
+      const startDate = new Date(rentalDateObj.getTime() - ONE_WEEK_MS);
+      const endDate = new Date(rentalDateObj.getTime() + ONE_WEEK_MS);
+      await firestore.collection("rentals").doc(this.currentRentalFileName).set({
+        rented: true,
+        createdAt: new Date(),
+        rentalDate: rentalDateObj,
+        rentalPeriodStart: startDate,
+        rentalPeriodEnd: endDate,
+      });
+      this.closeRentalModal();
+    },
 
     isRented(fileName) {
-      const rental = this.rentals.find(r => r.id === fileName);
-      if (!rental || !rental.rentalDate) return false;
-      const now = new Date();
-      const start = new Date(rental.rentalDate.getTime() - ONE_WEEK_MS);
-      const end = new Date(rental.rentalDate.getTime() + ONE_WEEK_MS);
-      return now >= start && now <= end;
+      return this.rentals.some(record => record.id === fileName);
     },
 
     getRentalPeriodText(fileName) {
-      const rental = this.rentals.find(r => r.id === fileName);
-      if (!rental || !rental.rentalDate) return "";
-      const ONE_WEEK_MS = 7 * 24 * 60 * 60 * 1000;
-      const start = new Date(rental.rentalDate.getTime() - ONE_WEEK_MS);
-      const end = new Date(rental.rentalDate.getTime() + ONE_WEEK_MS);
+      const rentalRecord = this.rentals.find(record => record.id === fileName);
+      if (!rentalRecord || !rentalRecord.rentalPeriodStart || !rentalRecord.rentalPeriodEnd) return "";
       const options = { month: "numeric", day: "numeric" };
-      const startStr = start.toLocaleDateString("ja-JP", options);
-      const endStr = end.toLocaleDateString("ja-JP", options);
+      const startStr = rentalRecord.rentalPeriodStart.toLocaleDateString("ja-JP", options);
+      const endStr = rentalRecord.rentalPeriodEnd.toLocaleDateString("ja-JP", options);
       return `貸出予約 ${startStr} 〜 ${endStr}`;
     },
-
-
-    // async toggleRental(fileName) {
-    //   if (this.isRented(fileName)) {
-    //     await firestore.collection("rentals").doc(fileName).delete();
-    //   } else {
-    //     await firestore.collection("rentals").doc(fileName).set({
-    //       rented: true,
-    //       createdAt: new Date(), // 登録日時
-    //     })
-    //   }
-    // },
 
     async toggleRental(fileName) {
       if (this.isRented(fileName)) {
@@ -235,8 +220,6 @@ document.addEventListener('alpine:init', () => {
         this.openRentalModal(fileName);
       }
     }
-
-
 
   }));
 
