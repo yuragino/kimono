@@ -27,7 +27,7 @@
   align-items: center;
   padding: 15px 20px;
   border-bottom: 2px solid #f0f0f0;
-  background: linear-gradient(to right, #fdf6f0, #fff);
+  background-color: #fdf6f0;
 }
 
 .modal-header h3 {
