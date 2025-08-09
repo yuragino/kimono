@@ -147,6 +147,7 @@ document.addEventListener('alpine:init', () => {
 
     logoutAdmin() {
       this.isAdmin = false;
+      this.showOnlyRented = false;
     },
 
     openRentalModal(fileName) {
