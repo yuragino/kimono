@@ -1,5 +1,13 @@
 import { firestore } from "./firebase.js";
+import { getHeightRange, getHipSize, convertGoogleDriveUrl } from './utils.js';
 const ONE_WEEK_MS = 7 * 24 * 60 * 60 * 1000;
+async function sha256(text) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(text);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
 document.addEventListener('alpine:init', () => {
   Alpine.data('kimonoApp', () => ({
     kimonoCategories: {
@@ -25,6 +33,7 @@ document.addEventListener('alpine:init', () => {
     sortBy: "身丈_asc",
     kimonoRecords: [],
     loading: true,
+    errorMessage: '',
 
     favorites: [], //お気に入りにした画像のファイル名を格納
     showFavorites: false,
@@ -37,21 +46,12 @@ document.addEventListener('alpine:init', () => {
     currentRentalFileName: '',
     showOnlyRented: false,  //予約のみに絞り込み
 
-    init() {
-      this.listenRentals();
-
-      const saved = localStorage.getItem('kimonoFavorites');
-      this.favorites = saved ? JSON.parse(saved) : [];
-
-      this.loadKimonoRecords();
-    },
-
+    // --- 算出プロパティ ---
     get sortedKimonoRecords() {
       const compareByMitake = this.sortBy === "身丈_asc"
         ? (a, b) => a["身丈"] - b["身丈"]
         : (a, b) => b["身丈"] - a["身丈"];
       let list = [...this.kimonoRecords];
-      // 貸出中フィルタ
       if (this.showOnlyRented === true) {
         list = list.filter(record => this.isRented(record['ファイル名']));
       }
@@ -64,14 +64,29 @@ document.addEventListener('alpine:init', () => {
       );
     },
 
+    // --- 初期化処理 ---
+    init() {
+      this.loadKimonoRecords();
+      this.listenRentals();
+      const saved = localStorage.getItem('kimonoFavorites');
+      this.favorites = saved ? JSON.parse(saved) : [];
+    },
+
+    // UI関連メソッド
+    getHeightRange(mitake) {
+      return getHeightRange(this.category, mitake);
+    },
+    getHipSize(backWidth) {
+      return getHipSize(backWidth);
+    },
     setCategory(categoryName) {
       this.category = categoryName;
       const urlObj = new URL(window.location);
       urlObj.searchParams.set('category', categoryName);
-      window.history.pushState({}, '', urlObj);
       this.loadKimonoRecords();
     },
 
+    // データ取得・更新メソッド
     async loadKimonoRecords() {
       this.loading = true;
       try {
@@ -81,30 +96,10 @@ document.addEventListener('alpine:init', () => {
       } catch (error) {
         console.error("読み込み失敗", error);
         this.kimonoRecords = [];
+        this.errorMessage = 'データの読み込みに失敗しました。ページを再読み込みしても直らない場合は管理者にお伝えください。';
       } finally {
         this.loading = false;
       }
-    },
-
-    getHipSize(backWidth) {
-      const hipSizeMap = {
-        27: "84cm以下", 28: "89cm以下", 29: "94cm以下",
-        30: "99cm以下", 31: "104cm以下", 32: "109cm以下",
-        33: "114cm以下", 34: "119cm以下"
-      };
-      return hipSizeMap[backWidth] || "サイズ不明";
-    },
-
-    getHeightRange(mitake) {
-      return this.category === "浴衣"
-        ? `${mitake - 7}cm〜${mitake + 8}cm`
-        : `${mitake - 5}cm〜${mitake + 5}cm`;
-    },
-
-    convertGoogleDriveUrl(driveShareUrl) {
-      const urlObj = new URL(driveShareUrl);
-      const fileId = urlObj.searchParams.get("id");
-      return `https://lh3.googleusercontent.com/d/${fileId}`
     },
 
     toggleFavorite(fileName) {
@@ -120,29 +115,17 @@ document.addEventListener('alpine:init', () => {
       return this.favorites.includes(fileName);
     },
 
-    // SHA-256ハッシュ
-    adminLogin() {
+    // --- 管理者ログイン関連 ---
+    async adminLogin() {
       const code = prompt("管理者でない場合はキャンセルを押してください。");
       if (!code) return;
-
       const storedHash = "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4";
-
-      // ハッシュ化関数（async）
-      async function sha256(text) {
-        const encoder = new TextEncoder();
-        const data = encoder.encode(text);
-        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-        const hashArray = Array.from(new Uint8Array(hashBuffer));
-        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+      const inputHash = await sha256(code);
+      if (inputHash === storedHash) {
+        this.isAdmin = true;
+      } else {
+        alert("パスコードが間違っています。");
       }
-
-      sha256(code).then(inputHash => {
-        if (inputHash === storedHash) {
-          this.isAdmin = true;
-        } else {
-          alert("パスコードが間違っています。");
-        }
-      });
     },
 
     logoutAdmin() {
@@ -150,6 +133,7 @@ document.addEventListener('alpine:init', () => {
       this.showOnlyRented = false;
     },
 
+    // --- 貸出予約関連 ---
     openRentalModal(fileName) {
       this.currentRentalFileName = fileName;
       const rental = this.rentals.find(record => record.id === fileName);
@@ -234,17 +218,14 @@ document.addEventListener('alpine:init', () => {
     additionalImageKeys: ['パターンb', 'パターンc', 'パターンd', 'パターンe', 'パターンf', 'パターンg'],
     currentImageIndex: 0,
     fileNumber: kimonoRecord['ファイル名'].match(/\d{3}/)?.[0] || '',
-
     // 追加画像URL配列を動的に生成
     get additionalImageUrls() {
       return this.additionalImageKeys.map(key => kimonoRecord[key]).filter(Boolean);
     },
-
     // メイン画像と追加画像をまとめた「全画像URLリスト」
     get allImageUrls() {
       return [this.mainImageUrl, ...this.additionalImageUrls];
     },
-
     prev() {
       if (this.currentImageIndex === 0) {
         this.currentImageIndex = this.allImageUrls.length - 1;
@@ -258,6 +239,9 @@ document.addEventListener('alpine:init', () => {
       } else {
         this.currentImageIndex++;
       }
+    },
+    convertGoogleDriveUrl(driveShareUrl) {
+      return convertGoogleDriveUrl(driveShareUrl);
     },
   }));
 });
