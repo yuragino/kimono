@@ -14,7 +14,7 @@
     integrity="sha384-...." crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="./css/layout.css">
   <link rel="stylesheet" href="./css/card-style.css">
-  <link rel="stylesheet" href="./css/favorite.css">
+  <link rel="stylesheet" href="./css/modal.css">
   <link rel="stylesheet" href="./css/additional.css">
 </head>
 
@@ -50,12 +50,12 @@
     </div>
   </header>
   <main>
-      <div class="season-calendar">
-        <template x-for="month in 12" :key="month">
-          <img :src="'./月アイコン/' + month + '月.png'"
-            :class="{ notactive: !kimonoCategories[category].seasonMonths.includes(month) }">
-        </template>
-      </div>
+    <div class="season-calendar">
+      <template x-for="month in 12" :key="month">
+        <img :src="'./月アイコン/' + month + '月.png'"
+          :class="{ notactive: !kimonoCategories[category].seasonMonths.includes(month) }">
+      </template>
+    </div>
     <div class="list">
       <template x-if="loading">
         <p>読み込み中...</p>
@@ -75,13 +75,14 @@
             <button class="favorite-btn" @click="toggleFavorite(kimonoRecord['ファイル名'])">
               <i :class="isFavorite(kimonoRecord['ファイル名']) ? 'fa-solid fa-heart' : 'fa-regular fa-heart'"></i>
             </button>
-            <div class="status-badge" x-show="isRented(kimonoRecord['ファイル名'])">貸出中</div>
-
+            <!-- 貸出予約ラベル -->
+            <div class="status-badge" x-show="isRented(kimonoRecord['ファイル名'])"
+              x-text="getRentalPeriodText(kimonoRecord['ファイル名'])"></div>
             <!-- 管理者モード用貸出切替ボタン -->
-            <button x-show="isAdmin" class="rental-btn" @click="toggleRental(kimonoRecord['ファイル名'])">
+            <button x-show="isAdmin" class="rental-btn"
+              @click="isRented(kimonoRecord['ファイル名']) ? toggleRental(kimonoRecord['ファイル名']) : openRentalModal(kimonoRecord['ファイル名'])">
               <span x-text="isRented(kimonoRecord['ファイル名']) ? '貸出解除' : '貸出登録'"></span>
             </button>
-
           </div>
 
           <details>
@@ -125,18 +126,24 @@
     <span x-show="!isAdmin" @click="adminLogin" class="admin-link">管理者専用</span>
   </footer>
 
+  <!-- 貸出登録日入力モーダル -->
+  <div class="modal rental-modal" x-show="showRentalModal" @click.self="closeRentalModal">
+    <div class="modal-content rental-modal-content">
+      <h3>貸出日登録</h3>
+      <input type="date" x-model="rentalDate">
+      <div class="modal-buttons">
+        <button @click="submitRental">登録</button>
+        <button @click="closeRentalModal">キャンセル</button>
+      </div>
+    </div>
+  </div>
 
-  <div class="modal" x-show="showFavorites" @click.self="showFavorites = false">
-    <div class="modal-content">
+  <!-- お気に入り一覧モーダル -->
+  <div class="modal favorite-modal" x-show="showFavorites" @click.self="showFavorites = false">
+    <div class="modal-content favorite-modal-content">
       <div class="modal-header">
         <h3>お気に入り一覧</h3>
-        <div class="modal-actions">
-          <button class="close-btn" @click="showFavorites = false">
-            <i class="fa-solid fa-xmark"></i>
-          </button>
-        </div>
       </div>
-
       <div class="modal-body">
         <p x-show="favoriteRecords.length === 0">お気に入りに登録したコーデはありません。</p>
         <div class="list">
@@ -161,7 +168,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> <!-- お気に入りモーダルの閉じタグ -->
 
 </body>
 

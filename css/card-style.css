@@ -102,3 +102,34 @@ th {
 .favorite-btn .fa-solid {
   color: #e74c3c;
 }
+
+/* 貸出予約の文字 */
+.status-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background-color: rgba(231, 76, 60, 0.9);
+  color: white;
+  font-size: 0.8rem;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+/* 貸出登録ボタン */
+.rental-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background-color: rgba(46, 204, 113, 0.9);
+  color: white;
+  border: none;
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.rental-btn:hover {
+  background-color: rgba(39, 174, 96, 1);
+}
