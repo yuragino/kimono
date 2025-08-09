@@ -45,6 +45,9 @@
         </button>
       </div>
       <ul class="right-side">
+        <li x-show="!isAdmin" @click="adminLogin" class="admin-link">
+          <small>管理者専用</small>
+        </li>
         <li x-show="isAdmin" @click="logoutAdmin">ログアウト</li>
       </ul>
     </div>
@@ -133,7 +136,6 @@
 
   <footer>
     <small>&copy; 2025 Kimono コーデ</small>
-    <span x-show="!isAdmin" @click="adminLogin" class="admin-link">管理者専用</span>
   </footer>
 
   <!-- 貸出登録日入力モーダル -->

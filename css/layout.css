@@ -88,10 +88,9 @@ select {
 }
 
 .header-inner .right-side li small {
-  font-size: 0.75rem;
-  opacity: 0.4;
+  font-size: 0.8rem;
+  opacity: 0.5;
   cursor: not-allowed;
-  transition: opacity 0.2s ease;
 }
 
 footer {
@@ -100,12 +99,6 @@ footer {
   background-color: #fafafa;
   font-size: 0.8rem;
   border-top: 1px solid #eac089;
-}
-
-.admin-link {
-  margin-left: 10px;
-  cursor: not-allowed;
-  opacity: 0.5;
 }
 
 main {
