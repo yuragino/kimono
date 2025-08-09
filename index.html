@@ -90,7 +90,7 @@
               <i :class="isFavorite(kimonoRecord['ファイル名']) ? 'fa-solid fa-heart' : 'fa-regular fa-heart'"></i>
             </button>
             <!-- 貸出予約ラベル -->
-            <div class="status-badge" x-show="isRented(kimonoRecord['ファイル名'])"
+            <div class="status-label" x-show="isRented(kimonoRecord['ファイル名'])"
               x-text="getRentalPeriodText(kimonoRecord['ファイル名'])"></div>
             <!-- 管理者モード用貸出切替ボタン -->
             <button x-show="isAdmin" class="rental-btn"
@@ -130,7 +130,7 @@
         </div>
       </template>
     </div>
-    <div class="back-to-top" @click="window.scrollTo({ top: 0, behavior: 'smooth' })"  x-show="!loading">
+    <div class="back-to-top" @click="window.scrollTo({ top: 0, behavior: 'smooth' })" x-show="!loading">
       <i class="fa-solid fa-arrow-up"></i> TOPへ戻る
     </div>
   </main>
