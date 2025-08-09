@@ -131,15 +131,29 @@ document.addEventListener('alpine:init', () => {
       return this.favorites.includes(fileName);
     },
 
+    // SHA-256ハッシュ
     adminLogin() {
       const code = prompt("管理者でない場合はキャンセルを押してください。");
       if (!code) return;
-      const storedHash = "81dc9bdb52d04dc20036dbd8313ed055"; // MD5ハッシュ
-      if (md5(code) === storedHash) {
-        this.isAdmin = true;
-      } else {
-        alert("パスコードが間違っています。");
+
+      const storedHash = "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4";
+
+      // ハッシュ化関数（async）
+      async function sha256(text) {
+        const encoder = new TextEncoder();
+        const data = encoder.encode(text);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
       }
+
+      sha256(code).then(inputHash => {
+        if (inputHash === storedHash) {
+          this.isAdmin = true;
+        } else {
+          alert("パスコードが間違っています。");
+        }
+      });
     },
 
     logoutAdmin() {
