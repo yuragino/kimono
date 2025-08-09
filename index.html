@@ -50,10 +50,20 @@
     </div>
   </header>
   <main>
-    <div class="season-calendar">
-      <template x-for="month in 12" :key="month">
-        <img :src="'./月アイコン/' + month + '月.png'"
-          :class="{ notactive: !kimonoCategories[category].seasonMonths.includes(month) }">
+    <div class="main-top-content">
+      <template x-if="!isAdmin">
+        <div class="season-calendar">
+          <template x-for="month in 12" :key="month">
+            <img :src="'./月アイコン/' + month + '月.png'"
+              :class="{ notactive: !kimonoCategories[category].seasonMonths.includes(month) }">
+          </template>
+        </div>
+      </template>
+      <template x-if="isAdmin">
+        <label>
+          <input type="checkbox" x-model="showOnlyRented">
+          <span>予約が入っているコーデのみを表示</span>
+        </label>
       </template>
     </div>
     <div class="list">

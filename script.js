@@ -35,7 +35,7 @@ document.addEventListener('alpine:init', () => {
     showRentalModal: false,
     rentalDate: '',
     currentRentalFileName: '',
-
+    showOnlyRented: false,  //予約のみに絞り込み
 
     init() {
       this.listenRentals();
@@ -50,7 +50,12 @@ document.addEventListener('alpine:init', () => {
       const compareByMitake = this.sortBy === "身丈_asc"
         ? (a, b) => a["身丈"] - b["身丈"]
         : (a, b) => b["身丈"] - a["身丈"];
-      return [...this.kimonoRecords].sort(compareByMitake);
+      let list = [...this.kimonoRecords];
+      // 貸出中フィルタ
+      if (this.showOnlyRented === true) {
+        list = list.filter(record => this.isRented(record['ファイル名']));
+      }
+      return list.sort(compareByMitake);
     },
 
     get favoriteRecords() {
