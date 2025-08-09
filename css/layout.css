@@ -108,8 +108,12 @@ footer {
   opacity: 0.5;
 }
 
+main {
+  padding: 0 2rem;
+}
+
 /* モバイルの設定 */
-@media screen and (max-width: 580px) {
+@media screen and (max-width: 675px) {
   h2 {
     font-size: larger;
   }
@@ -254,7 +258,7 @@ footer {
   }
 }
 
-@media (min-width: 580px) and (max-width: 991px) {
+@media (min-width: 675px) and (max-width: 991px) {
   h2 {
     display: none;
   }
