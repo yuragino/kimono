@@ -32,6 +32,41 @@ document.addEventListener('alpine:init', () => {
     isAdmin: false,
     rentals: [],  // 貸出中のファイル名を格納
 
+    init() {
+      this.listenRentals();
+      // ① URLパラメータ fav があればそれを優先
+      const urlFavs = new URLSearchParams(location.search).get('fav');
+      if (urlFavs) {
+        this.favorites = urlFavs.split(",");
+      } else {
+        // ② なければローカルストレージ
+        const saved = localStorage.getItem('kimonoFavorites');
+        this.favorites = saved ? JSON.parse(saved) : [];
+      }
+      this.loadKimonoRecords();
+    },
+
+    generateFavoritesLink() {
+      const baseUrl = location.origin + location.pathname;
+      const favParam = this.favorites.join(",");
+      return `${baseUrl}?fav=${encodeURIComponent(favParam)}`;
+    },
+    shareFavorites() {
+      const link = this.generateFavoritesLink();
+      if (navigator.share) {
+        navigator.share({
+          title: 'お気に入り着物コーデ',
+          url: link
+        }).catch(err => console.log("共有キャンセル", err));
+      } else {
+        // PCなど非対応の場合はリンクをコピー
+        navigator.clipboard.writeText(link)
+          .then(() => alert("リンクをコピーしました"))
+          .catch(err => console.error("コピー失敗", err));
+      }
+    },
+
+
     get sortedKimonoRecords() {
       const compareByMitake = this.sortBy === "身丈_asc"
         ? (a, b) => a["身丈"] - b["身丈"]
@@ -45,12 +80,6 @@ document.addEventListener('alpine:init', () => {
       );
     },
 
-    init() {
-      this.listenRentals();
-      const saved = localStorage.getItem('kimonoFavorites');
-      this.favorites = saved ? JSON.parse(saved) : [];
-      this.loadKimonoRecords();
-    },
 
     listenRentals() {
       firestore.collection("rentals").onSnapshot(snapShot => {

@@ -12,22 +12,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
     integrity="sha384-...." crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="additional.css">
+  <link rel="stylesheet" href="./css/layout.css">
+  <link rel="stylesheet" href="./css/card-style.css">
+  <link rel="stylesheet" href="./css/favorite.css">
+  <link rel="stylesheet" href="./css/additional.css">
 </head>
 
 <body x-data="kimonoApp" x-init="init">
   <header x-show="!showFavorites" x-data="{ active: false }">
     <div class="header-inner">
       <h2 x-text="category + 'コーデ'"></h2>
-      <div class="mobile-right-side">
-        <div><i @click="showFavorites = true" class="fa-regular fa-heart"></i></div>
-        <button class="hamburger" :class="{ 'active': active }" @click="active = !active">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-      </div>
       <ul class="center" :class="{ 'active': active }">
         <template x-for="(categoryData, categoryName) in kimonoCategories">
           <li @click="setCategory(categoryName)" x-text="categoryName"
@@ -42,6 +36,14 @@
           <i class="fa-solid fa-circle-chevron-down"></i>
         </li>
       </ul>
+      <div class="mobile-right-side">
+        <div><i @click="showFavorites = true" class="fa-regular fa-heart"></i></div>
+        <button class="hamburger" :class="{ 'active': active }" @click="active = !active">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
       <ul class="right-side">
         <li x-show="isAdmin" @click="logoutAdmin">ログアウト</li>
       </ul>
@@ -124,9 +126,11 @@
     <div class="modal-content">
       <div class="modal-header">
         <h3>お気に入り一覧</h3>
-        <button class="close-btn" @click="showFavorites = false">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
+        <div class="modal-actions">
+          <button class="copy-btn" @click="shareFavorites()">
+            <i class="fa-solid fa-arrow-up-from-bracket"></i>
+          </button>
+        </div>
       </div>
 
       <div class="modal-body">
