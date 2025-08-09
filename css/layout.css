@@ -144,7 +144,7 @@ footer {
     flex-direction: column;
     gap: 0;
     border-top: 1px solid #eac089;
-    margin-top: 6vh;
+    margin-top: 8vh;
   }
 
   .header-inner ul.active {
@@ -246,7 +246,7 @@ footer {
   }
 
   main {
-    margin-top: 6vh;
+    margin-top: 8vh;
   }
 
   footer {
