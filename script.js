@@ -203,7 +203,7 @@ document.addEventListener('alpine:init', () => {
       return this.rentals.some(record => record.fileName === fileName);
     },
 
-    formatRentalPeriod(rental) {
+    formatRentalDateRange(rental) {
       if (!rental) return "";
       const options = { month: "numeric", day: "numeric" };
       const startStr = rental.rentalStartDate ? rental.rentalStartDate.toLocaleDateString("ja-JP", options) : "";

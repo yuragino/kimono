@@ -93,7 +93,7 @@
             <div class="status-overlay">
               <template x-for="rental in rentalsFor(kimonoRecord['ファイル名'])" :key="rental.id">
                 <div class="status-row">
-                  <div class="status-label" x-text="formatRentalPeriod(rental)"></div>
+                  <div class="status-label" x-text="formatRentalDateRange(rental)"></div>
                   <div x-show="isAdmin">
                     <button class="rental-btn" @click="cancelRental(rental.id)">貸出解除</button>
                   </div>
