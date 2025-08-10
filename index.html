@@ -65,11 +65,12 @@
       </template>
       <template x-if="isAdmin">
         <label>
-          <input type="checkbox" x-model="isShowingOnlyRented">
+          <input type="checkbox" x-model="showOnlyRented">
           <span>貸出予約中のみ表示</span>
         </label>
       </template>
     </div>
+    <!-- カードを表示する場所 -->
     <div class="list">
       <template x-if="loading">
         <p style="text-align: center;">読み込み中...</p>
@@ -105,9 +106,7 @@
                 </button>
               </div>
             </div>
-
           </div>
-
           <details>
             <summary>サイズ詳細</summary>
             <table>
@@ -125,7 +124,6 @@
               </tr>
             </table>
           </details>
-
           <table>
             <tr>
               <th>推奨身長</th>
@@ -143,7 +141,6 @@
       <i class="fa-solid fa-arrow-up"></i> TOPへ戻る
     </div>
   </main>
-
 
   <footer x-show="!loading">
     <small>&copy; 2025 Kimono コーデ</small>
@@ -191,7 +188,7 @@
         </div>
       </div>
     </div>
-  </div> <!-- お気に入りモーダルの閉じタグ -->
+  </div>
 
 </body>
 

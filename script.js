@@ -28,31 +28,31 @@ document.addEventListener('alpine:init', () => {
         seasonMonths: [10, 11, 12, 1, 2, 3, 4, 5]
       }
     },
-
-    category: new URLSearchParams(location.search).get('category') ?? '浴衣',
     sortBy: "身丈_asc",
+    category: new URLSearchParams(location.search).get('category') ?? '浴衣',
+    // データ
     kimonoRecords: [],
+    rentals: [],
+    favorites: [],
+    // UI状態
     loading: true,
     errorMessage: '',
-
-    favorites: [], //お気に入りにした画像のファイル名を格納
     showFavorites: false,
-
-    isAdmin: false,
-    rentals: [],  // 貸出中のファイル名を格納
-
+    showOnlyRented: false,
     isRentalModalOpen: false,
+    // ユーザー状態
+    isAdmin: false,
+    // モーダル関連
     rentalDate: '',
     rentalTargetFileName: '',
-    isShowingOnlyRented: false,  //予約のみに絞り込み
-
+    
     // --- 算出プロパティ ---
     get sortedKimonoRecords() {
       const compareByMitake = this.sortBy === "身丈_asc"
         ? (a, b) => a["身丈"] - b["身丈"]
         : (a, b) => b["身丈"] - a["身丈"];
       let list = [...this.kimonoRecords];
-      if (this.isShowingOnlyRented === true) {
+      if (this.showOnlyRented === true) {
         list = list.filter(record => this.isRented(record['ファイル名']));
       }
       return list.sort(compareByMitake);
@@ -130,7 +130,7 @@ document.addEventListener('alpine:init', () => {
 
     logoutAdmin() {
       this.isAdmin = false;
-      this.isShowingOnlyRented = false;
+      this.showOnlyRented = false;
     },
 
     // --- 貸出予約関連 ---
