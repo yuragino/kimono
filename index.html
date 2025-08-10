@@ -46,7 +46,7 @@
       </div>
       <ul class="right-side">
         <li x-show="!isAdmin" @click="adminLogin" class="admin-link">
-          <small>管理者専用</small>
+          <i class="fas fa-user-cog"></i>
         </li>
         <li x-show="isAdmin" @click="logoutAdmin">ログアウト</li>
       </ul>
@@ -105,7 +105,7 @@
                 </button>
               </div>
             </div>
-            
+
           </div>
 
           <details>
