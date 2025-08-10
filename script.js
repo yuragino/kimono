@@ -45,7 +45,7 @@ document.addEventListener('alpine:init', () => {
     // モーダル関連
     rentalDate: '',
     rentalTargetFileName: '',
-    
+
     // --- 算出プロパティ ---
     get sortedKimonoRecords() {
       const compareByMitake = this.sortBy === "身丈_asc"
@@ -244,4 +244,4 @@ document.addEventListener('alpine:init', () => {
     },
   }));
 });
-// cSpell:ignore mitake firestore
+// cSpell:ignore mitake firestore yukata hitoe komon meisen
