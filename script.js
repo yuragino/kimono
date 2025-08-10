@@ -117,7 +117,7 @@ document.addEventListener('alpine:init', () => {
 
     // --- 管理者ログイン関連 ---
     async adminLogin() {
-      const code = prompt("管理者でない場合はキャンセルを押してください。");
+      const code = prompt("こちらは管理者モードです。管理者でない場合はキャンセルを押してください。");
       if (!code) return;
       const storedHash = "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4";
       const inputHash = await sha256(code);
@@ -170,7 +170,7 @@ document.addEventListener('alpine:init', () => {
       this.currentRentalFileName = '';
     },
 
-    // 貸出登録・切替
+    // 貸出登録・解除
     rentalsFor(fileName) {
       return this.rentals
         .filter(r => r.fileName === fileName)
@@ -202,15 +202,6 @@ document.addEventListener('alpine:init', () => {
     isRented(fileName) {
       return this.rentals.some(record => record.fileName === fileName);
     },
-
-    // getRentalPeriodText(fileName) {
-    //   const rentalRecord = this.rentals.find(record => record.fileName === fileName);
-    //   if (rentalRecord == null) return "";
-    //   const options = { month: "numeric", day: "numeric" };
-    //   const startStr = rentalRecord.rentalStartDate.toLocaleDateString("ja-JP", options);
-    //   const endStr = rentalRecord.rentalEndDate.toLocaleDateString("ja-JP", options);
-    //   return `貸出予約中 ${startStr} 〜 ${endStr}`;
-    // },
 
     formatRentalPeriod(rental) {
       if (!rental) return "";
