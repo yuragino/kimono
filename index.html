@@ -65,7 +65,7 @@
       </template>
       <template x-if="isAdmin">
         <label>
-          <input type="checkbox" x-model="showOnlyRented">
+          <input type="checkbox" x-model="isShowingOnlyRented">
           <span>貸出予約中のみ表示</span>
         </label>
       </template>
@@ -150,7 +150,7 @@
   </footer>
 
   <!-- 貸出登録日入力モーダル -->
-  <div class="modal rental-modal" x-show="showRentalModal" @click.self="closeRentalModal">
+  <div class="modal rental-modal" x-show="isRentalModalOpen" @click.self="closeRentalModal">
     <div class="modal-content rental-modal-content">
       <h3>貸出日登録</h3>
       <input type="date" x-model="rentalDate">

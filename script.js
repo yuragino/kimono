@@ -12,19 +12,19 @@ document.addEventListener('alpine:init', () => {
   Alpine.data('kimonoApp', () => ({
     kimonoCategories: {
       "浴衣": {
-        fileName: "yukata.json",
+        jsonFileName: "yukata.json",
         seasonMonths: [6, 7, 8, 9]
       },
       "単衣": {
-        fileName: "hitoe.json",
+        jsonFileName: "hitoe.json",
         seasonMonths: [5, 6, 9, 10]
       },
       "小紋": {
-        fileName: "komon.json",
+        jsonFileName: "komon.json",
         seasonMonths: [10, 11, 12, 1, 2, 3, 4, 5]
       },
       "アンティーク": {
-        fileName: "meisen.json",
+        jsonFileName: "meisen.json",
         seasonMonths: [10, 11, 12, 1, 2, 3, 4, 5]
       }
     },
@@ -41,10 +41,10 @@ document.addEventListener('alpine:init', () => {
     isAdmin: false,
     rentals: [],  // 貸出中のファイル名を格納
 
-    showRentalModal: false,
+    isRentalModalOpen: false,
     rentalDate: '',
-    currentRentalFileName: '',
-    showOnlyRented: false,  //予約のみに絞り込み
+    rentalTargetFileName: '',
+    isShowingOnlyRented: false,  //予約のみに絞り込み
 
     // --- 算出プロパティ ---
     get sortedKimonoRecords() {
@@ -52,7 +52,7 @@ document.addEventListener('alpine:init', () => {
         ? (a, b) => a["身丈"] - b["身丈"]
         : (a, b) => b["身丈"] - a["身丈"];
       let list = [...this.kimonoRecords];
-      if (this.showOnlyRented === true) {
+      if (this.isShowingOnlyRented === true) {
         list = list.filter(record => this.isRented(record['ファイル名']));
       }
       return list.sort(compareByMitake);
@@ -90,8 +90,8 @@ document.addEventListener('alpine:init', () => {
     async loadKimonoRecords() {
       this.loading = true;
       try {
-        const fileName = this.kimonoCategories[this.category].fileName;
-        const response = await fetch(`data/${fileName}`);
+        const jsonFileName = this.kimonoCategories[this.category].jsonFileName;
+        const response = await fetch(`data/${jsonFileName}`);
         this.kimonoRecords = await response.json();
       } catch (error) {
         console.error("読み込み失敗", error);
@@ -102,17 +102,17 @@ document.addEventListener('alpine:init', () => {
       }
     },
 
-    toggleFavorite(fileName) {
-      if (this.favorites.includes(fileName)) {
-        this.favorites = this.favorites.filter(favFileName => favFileName !== fileName);
+    toggleFavorite(imageFileName) {
+      if (this.favorites.includes(imageFileName)) {
+        this.favorites = this.favorites.filter(favFileName => favFileName !== imageFileName);
       } else {
-        this.favorites.push(fileName);
+        this.favorites.push(imageFileName);
       }
       localStorage.setItem('kimonoFavorites', JSON.stringify(this.favorites));
     },
 
-    isFavorite(fileName) {
-      return this.favorites.includes(fileName);
+    isFavorite(imageFileName) {
+      return this.favorites.includes(imageFileName);
     },
 
     // --- 管理者ログイン関連 ---
@@ -130,7 +130,7 @@ document.addEventListener('alpine:init', () => {
 
     logoutAdmin() {
       this.isAdmin = false;
-      this.showOnlyRented = false;
+      this.isShowingOnlyRented = false;
     },
 
     // --- 貸出予約関連 ---
@@ -138,7 +138,7 @@ document.addEventListener('alpine:init', () => {
       firestore.collection("rentals").onSnapshot(snapShot => {
         this.rentals = snapShot.docs.map(doc => ({
           id: doc.id,
-          fileName: doc.data().fileName,
+          imageFileName: doc.data().imageFileName,
           createdAt: doc.data().createdAt.toDate(),
           rentalDate: doc.data().rentalDate.toDate(),
           rentalStartDate: doc.data().rentalStartDate.toDate(),
@@ -158,22 +158,22 @@ document.addEventListener('alpine:init', () => {
     },
 
     // モーダル開閉
-    openRentalModal(fileName) {
-      this.currentRentalFileName = fileName;
+    openRentalModal(imageFileName) {
+      this.rentalTargetFileName = imageFileName;
       this.rentalDate = new Date().toISOString().slice(0, 10);
-      this.showRentalModal = true;
+      this.isRentalModalOpen = true;
     },
 
     closeRentalModal() {
-      this.showRentalModal = false;
+      this.isRentalModalOpen = false;
       this.rentalDate = '';
-      this.currentRentalFileName = '';
+      this.rentalTargetFileName = '';
     },
 
     // 貸出登録・解除
-    rentalsFor(fileName) {
+    rentalsFor(imageFileName) {
       return this.rentals
-        .filter(r => r.fileName === fileName)
+        .filter(record => record.imageFileName === imageFileName)
         .sort((a, b) => (a.rentalStartDate?.getTime() || 0) - (b.rentalStartDate?.getTime() || 0));
     },
 
@@ -184,7 +184,7 @@ document.addEventListener('alpine:init', () => {
       }
       const rentalDateObj = new Date(this.rentalDate);
       await firestore.collection("rentals").add({
-        fileName: this.currentRentalFileName,
+        imageFileName: this.rentalTargetFileName,
         rented: true,
         createdAt: new Date(),
         rentalDate: rentalDateObj,
@@ -199,12 +199,11 @@ document.addEventListener('alpine:init', () => {
     },
 
     // 貸出状態判定・表示
-    isRented(fileName) {
-      return this.rentals.some(record => record.fileName === fileName);
+    isRented(imageFileName) {
+      return this.rentals.some(record => record.imageFileName === imageFileName);
     },
 
     formatRentalDateRange(rental) {
-      if (!rental) return "";
       const options = { month: "numeric", day: "numeric" };
       const startStr = rental.rentalStartDate ? rental.rentalStartDate.toLocaleDateString("ja-JP", options) : "";
       const endStr = rental.rentalEndDate ? rental.rentalEndDate.toLocaleDateString("ja-JP", options) : "";
