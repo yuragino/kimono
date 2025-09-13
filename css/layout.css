@@ -107,7 +107,7 @@ main {
 
 /* モバイルの設定 */
 @media screen and (max-width: 675px) {
-  h2 {
+  .title {
     font-size: larger;
   }
 
@@ -252,7 +252,7 @@ main {
 }
 
 @media (min-width: 675px) and (max-width: 991px) {
-  h2 {
+  .title {
     display: none;
   }
 }

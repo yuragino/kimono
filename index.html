@@ -21,7 +21,7 @@
 <body x-data="kimonoApp" x-init="init">
   <header x-show="!showFavorites" x-data="{ active: false }">
     <div class="header-inner">
-      <h2 x-text="category + 'コーデ'"></h2>
+      <h2 x-text="category + 'コーデ'" class="title"></h2>
       <ul class="center" :class="{ 'active': active }">
         <template x-for="(categoryData, categoryName) in kimonoCategories">
           <li @click="setCategory(categoryName)" x-text="categoryName"
