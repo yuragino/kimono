@@ -1,4 +1,4 @@
-import { firestore } from "./firebase.js";
+import { firestore } from "../firebase.js";
 import { getHeightRange, getHipSize, convertGoogleDriveUrl } from './utils.js';
 const ONE_WEEK_MS = 7 * 24 * 60 * 60 * 1000;
 async function sha256(text) {

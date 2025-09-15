@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ja" x-data="app" x-init="init">
+
+<head>
+  <meta charset="UTF-8">
+  <title>着物コーデ一覧</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://www.gstatic.com/firebasejs/12.2.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore-compat.js"></script>
+  <script type="module" src="./js/image-list.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="./css/newlayout.css">
+  <link rel="stylesheet" href="./css/new-card-style.css">
+  <link rel="stylesheet" href="./css/new-modal.css">
+</head>
+
+<body x-data="app" x-init="init">
+  <header x-show="!showFavorites" x-data="{ active: false }">
+    <div class="header-inner">
+      <h2 x-text="category + 'コーデ'" class="title"></h2>
+      <ul class="center" :class="{ 'active': active }">
+        <li @click="changeCategory('小紋')" :class="{ 'active-category': category==='小紋' }">小紋</li>
+        <li @click="changeCategory('アンティーク')" :class="{ 'active-category': category==='アンティーク' }">アンティーク</li>
+        <li @click="changeCategory('浴衣')" :class="{ 'active-category': category==='浴衣' }">浴衣</li>
+        <li @click="showFavorites = true"><i class="fa-regular fa-heart"></i></li>
+        <li class="select-box">
+          <select x-model="sort">
+            <option value="heightAsc">身丈が小さい順</option>
+            <option value="heightDesc">身丈が大きい順</option>
+          </select>
+        </li>
+      </ul>
+      <div class="mobile-right-side">
+        <div><i @click="showFavorites = true" class="fa-regular fa-heart"></i></div>
+        <button class="hamburger" :class="{ 'active': active }" @click="active = !active">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="sub-filters" x-show="category !== '浴衣'">
+      <label class="checkbox-card">
+        <input type="checkbox" value="袷" x-model="subFilter">
+        <span>袷 <small>1~5,10~12月頃</small></span>
+      </label>
+      <label class="checkbox-card">
+        <input type="checkbox" value="単衣" x-model="subFilter">
+        <span>単衣 <small>5,6,9,10月頃</small></span>
+      </label>
+      <label class="checkbox-card">
+        <input type="checkbox" value="透単衣" x-model="subFilter">
+        <span>透単衣 <small>7,8月頃</small></span>
+      </label>
+    </div>
+    <!-- 一覧 -->
+    <div class="list">
+      <!-- コーデが無いとき -->
+      <template x-if="filteredAndSorted.length === 0">
+        <p class="no-data">
+          <i class="fa-regular fa-face-frown"></i> 現在このカテゴリのコーデはありません
+        </p>
+      </template>
+      <template x-for="item in filteredAndSorted" :key="item.id">
+        <div class="card">
+          <div class="image-container" x-data="{idx: 0}">
+            <template x-for="(url, i) in item.imageUrls" :key="i">
+              <img :src="url" class="kimono-image" x-show="i === idx">
+            </template>
+            <div class="preview-btn" x-show="item.imageUrls.length > 1">
+              <button class="prev" @click="idx = (idx - 1 + item.imageUrls.length) % item.imageUrls.length">
+                <i class="fa-solid fa-angles-left"></i>
+              </button>
+              <button class="next" @click="idx = (idx + 1) % item.imageUrls.length">
+                <i class="fa-solid fa-angles-right"></i>
+              </button>
+            </div>
+            <button class="favorite-btn" @click="toggleFavorite(item.id)">
+              <i :class="isFavorite(item.id) ? 'fa-solid fa-heart' : 'fa-regular fa-heart'"></i>
+            </button>
+            <div class="status-overlay">
+              <template x-for="(rental, idx) in item.rentals" :key="idx">
+                <div class="status-row">
+                  <div class="status-label" x-text="formatRentalDateRange(rental)"></div>
+                </div>
+              </template>
+            </div>
+            <table class="size-table">
+              <tr>
+                <th>身丈</th>
+                <td x-text="item.size.height + 'cm'"></td>
+              </tr>
+              <tr>
+                <th>後幅</th>
+                <td x-text="item.size.backWidth + 'cm'"></td>
+              </tr>
+              <tr>
+                <th>裄</th>
+                <td x-text="item.size.yuki + 'cm'"></td>
+              </tr>
+            </table>
+          </div>
+          <table>
+            <tr>
+              <th>推奨身長</th>
+              <td x-text="getHeightRange(item.size.height)"></td>
+            </tr>
+            <tr>
+              <th>ヒップサイズ</th>
+              <td x-text="getHipSize(item.size.backWidth)"></td>
+            </tr>
+          </table>
+        </div>
+      </template>
+    </div>
+
+    <!-- お気に入り一覧モーダル -->
+    <div class="modal favorite-modal" x-show="showFavorites" @click.self="showFavorites = false">
+      <div class="modal-content">
+        <h3>お気に入り</h3>
+        <div class="modal-body">
+          <p x-show="favoriteRecords.length===0">お気に入りに登録したコーデはありません。</p>
+          <div class="list">
+            <template x-for="fav in favoriteRecords" :key="fav.id">
+              <div class="card">
+                <div class="image-container" x-data="{idx: 0}">
+                  <!-- スライド画像 -->
+                  <template x-for="(url, i) in fav.imageUrls" :key="i">
+                    <img :src="url" class="kimono-image" x-show="i === idx">
+                  </template>
+                  <div class="preview-btn" x-show="fav.imageUrls.length > 1">
+                    <button class="prev" @click="idx = (idx - 1 + fav.imageUrls.length) % fav.imageUrls.length">
+                      <i class="fa-solid fa-angles-left"></i>
+                    </button>
+                    <button class="next" @click="idx = (idx + 1) % fav.imageUrls.length">
+                      <i class="fa-solid fa-angles-right"></i>
+                    </button>
+                  </div>
+                  <!-- お気に入りボタン -->
+                  <button class="favorite-btn" @click="toggleFavorite(fav.id)">
+                    <i :class="isFavorite(fav.id) ? 'fa-solid fa-heart' : 'fa-regular fa-heart'"></i>
+                  </button>
+                  <!-- 貸出情報がある場合 -->
+                  <div class="status-overlay">
+                    <template x-for="(rental, idx) in fav.rentals" :key="idx">
+                      <div class="status-row">
+                        <div class="status-label" x-text="formatRentalDateRange(rental)"></div>
+                      </div>
+                    </template>
+                  </div>
+                  <!-- サイズ表 -->
+                  <table class="size-table">
+                    <tr>
+                      <th>身丈</th>
+                      <td x-text="fav.size.height + 'cm'"></td>
+                    </tr>
+                    <tr>
+                      <th>後幅</th>
+                      <td x-text="fav.size.backWidth + 'cm'"></td>
+                    </tr>
+                    <tr>
+                      <th>裄</th>
+                      <td x-text="fav.size.yuki + 'cm'"></td>
+                    </tr>
+                  </table>
+                </div>
+                <!-- 推奨計算表 -->
+                <table>
+                  <tr>
+                    <th>推奨身長</th>
+                    <td x-text="getHeightRange(fav.size.height)"></td>
+                  </tr>
+                  <tr>
+                    <th>ヒップサイズ</th>
+                    <td x-text="getHipSize(fav.size.backWidth)"></td>
+                  </tr>
+                </table>
+              </div>
+            </template>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <small>&copy; 2025 Kimono コーデ</small>
+  </footer>
+</body>
+
+</html>

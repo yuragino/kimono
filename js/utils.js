@@ -1,9 +1,9 @@
 export function getHeightRange(category, mitake) {
+  const val = Number(mitake); // まず数値化
   return category === "浴衣"
-    ? `${mitake - 7}cm〜${mitake + 8}cm`
-    : `${mitake - 5}cm〜${mitake + 5}cm`;
+    ? `${val - 7}cm〜${val + 8}cm`
+    : `${val - 5}cm〜${val + 5}cm`;
 }
-
 export function getHipSize(backWidth) {
   const hipSizeMap = {
     27: "84cm以下", 28: "89cm以下", 29: "94cm以下",

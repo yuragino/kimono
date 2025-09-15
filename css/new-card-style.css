@@ -1,0 +1,197 @@
+/* 画像カードが表示される領域 */
+.list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.card {
+  max-width: 350px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 0.5rem;
+}
+
+.card img {
+  border-radius: 8px;
+}
+
+details {
+  margin-top: 0.5rem;
+}
+
+summary {
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0.3rem;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+}
+
+table {
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+th,
+td {
+  padding: 0.3rem;
+  text-align: left;
+}
+
+th {
+  color: #666;
+  width: 40%;
+}
+
+.image-container {
+  position: relative;
+}
+
+.preview-btn button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.7);
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 50%;
+}
+
+.image-container .prev {
+  left: 0;
+}
+
+.image-container .next {
+  right: 0;
+}
+
+.image-label {
+  position: absolute;
+  left: 4px;
+  bottom: 4px;
+  font-size: 0.8rem;
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.favorite-btn {
+  position: absolute;
+  bottom: 8px;
+  right: 4px;
+  background: rgba(255, 255, 255, 0.7);
+  border: none;
+  cursor: pointer;
+  font-size: 1.4em;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  padding: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.favorite-btn .fa-regular {
+  color: #999;
+}
+
+.favorite-btn .fa-solid {
+  color: #e74c3c;
+}
+
+.status-overlay {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  z-index: 10;
+}
+
+/* 貸出予約の文字 */
+.status-label {
+  background-color: rgba(231, 76, 60, 0.9);
+  color: white;
+  font-size: 0.8rem;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 4px;
+  width: max-content;
+}
+
+.size-table {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 21%;
+  border-collapse: collapse;
+  font-size: 0.5rem;
+}
+
+.size-table th,
+.size-table td {
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+}
+
+.size-table th {
+  text-align: right;
+  font-weight: 600;
+}
+
+.size-table td {
+  text-align: left;
+}
+
+.no-data {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.1rem;
+  color: #666;
+}
+
+.sub-filters {
+  display: flex;
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.checkbox-card {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  background: #fff;
+  transition: all 0.25s;
+}
+
+.checkbox-card input {
+  display: none;
+}
+
+.checkbox-card span {
+  display: flex;
+  flex-direction: column;
+}
+
+.checkbox-card small {
+  font-size: 11px;
+  color: #888;
+}
+
+.checkbox-card:has(input:checked){
+  background: #ffe0b6;
+  border-color: #ffcf8b;
+}
