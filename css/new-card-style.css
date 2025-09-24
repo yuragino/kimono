@@ -31,7 +31,6 @@ summary {
 
 table {
   width: 100%;
-  margin-top: 0.5rem;
 }
 
 th,
@@ -128,22 +127,20 @@ th {
 
 .size-table {
   position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 21%;
+  top: 0;
+  right: 0;
+  width: 19%;
+  border-top-right-radius: 8px;
   border-collapse: collapse;
+  overflow: hidden;
   font-size: 0.5rem;
+  border: hidden;
 }
 
 .size-table th,
 .size-table td {
   background: #f9f9f9;
   border: 1px solid #ddd;
-}
-
-.size-table th {
-  text-align: right;
-  font-weight: 600;
 }
 
 .size-table td {
