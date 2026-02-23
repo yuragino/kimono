@@ -16,8 +16,7 @@ const db = getFirestore(app);
 document.addEventListener("alpine:init", () => {
   Alpine.data("app", () => ({
     category: new URLSearchParams(location.search).get("category") || "小紋",
-    subFilter: (new URLSearchParams(location.search).get("subCategory") || "")
-      .split(",").filter(Boolean),
+    subFilter: new URLSearchParams(location.search).get("subCategory") || "袷",
     sort: new URLSearchParams(location.search).get("sort") || "heightAsc",
     items: [],
     showFavorites: false,
@@ -58,9 +57,8 @@ document.addEventListener("alpine:init", () => {
 
     get filteredAndSorted() {
       let arr = [...this.items];
-      // --- subFilter の絞り込み処理追加 ---
-      if (this.subFilter.length > 0) {
-        arr = arr.filter(item => this.subFilter.includes(item.subCategory));
+      if (this.subFilter) {
+        arr = arr.filter(item => item.subCategory === this.subFilter);
       }
       if (this.sort === "heightAsc") arr.sort((a, b) => (a.size?.height || 0) - (b.size?.height || 0));
       if (this.sort === "heightDesc") arr.sort((a, b) => (b.size?.height || 0) - (a.size?.height || 0));
