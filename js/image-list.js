@@ -90,7 +90,7 @@ document.addEventListener("alpine:init", () => {
       const options = { month: "numeric", day: "numeric" };
       const startStr = toDate(rental.rentalStartDate).toLocaleDateString("ja-JP", options);
       const endStr = toDate(rental.rentalEndDate).toLocaleDateString("ja-JP", options);
-      return `予約 ${startStr} 〜 ${endStr}`;
+      return `予約済 ${startStr} 〜 ${endStr}`;
     }
 
   }));
